@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
 import { PasswordInput } from "../components/BasicComps";
+import { UseApi } from "../Hooks/UseApi";
 
 export default function RegisterTenant() {
   const navigate = useNavigate();
@@ -14,27 +15,24 @@ export default function RegisterTenant() {
       .required("Password is required"),
   });
 
+  // Setup the mutation using your hook
+  const registerMutation = UseApi({
+    url: "/tenants/register",
+    method: "POST",
+  });
   const handleRegister = async (values, { setSubmitting, setErrors }) => {
-    try {
-      const res = await fetch("http://localhost:4000/tenants/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
+    registerMutation.mutate(values, {
+      onSuccess: (data) => {
         localStorage.setItem("token", data.token);
         navigate("/dashboard");
-      } else {
-        const errorData = await res.json();
-        setErrors({ slug: errorData.message || "Company already exists" });
-      }
-    } catch (error) {
-      setErrors({ name: "Server error. Please try again." });
-    } finally {
-      setSubmitting(false);
-    }
+      },
+      onError: (error) => {
+        setErrors({ slug: error.message || "Company already exists" });
+      },
+      onSettled: () => {
+        setSubmitting(false);
+      },
+    });
   };
 
   return (
@@ -94,7 +92,7 @@ export default function RegisterTenant() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Admin Password
                 </label>
-                <Field 
+                <Field
                   as={PasswordInput}
                   name="adminPassword"
                   className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 
