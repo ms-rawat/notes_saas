@@ -1,13 +1,13 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
+import { PasswordInput } from "../components/BasicComps";
 
 export default function RegisterTenant() {
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Company name is required"),
-    slug: Yup.string().required("Unique company slug is required"),
     adminEmail: Yup.string().email("Invalid email").required("Admin email is required"),
     adminPassword: Yup.string()
       .min(6, "Password must be at least 6 characters")
@@ -70,25 +70,6 @@ export default function RegisterTenant() {
                 />
               </div>
 
-              {/* Company Slug */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Company Slug
-                </label>
-                <Field
-                  type="text"
-                  name="slug"
-                  className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 
-                             bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 
-                             shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2"
-                />
-                <ErrorMessage
-                  name="slug"
-                  component="div"
-                  className="text-sm text-red-500 mt-1"
-                />
-              </div>
-
               {/* Admin Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -113,8 +94,8 @@ export default function RegisterTenant() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Admin Password
                 </label>
-                <Field
-                  type="password"
+                <Field 
+                  as={PasswordInput}
                   name="adminPassword"
                   className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 
                              bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 
