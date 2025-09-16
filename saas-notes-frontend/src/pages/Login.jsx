@@ -1,7 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux"
-import { loginSuccess } from "../store/authSlice"
 import { useNavigate } from "react-router"
 
 export default function Login() {
@@ -25,7 +24,7 @@ export default function Login() {
 
       if (res.ok) {
         const data = await res.json()
-        dispatch(loginSuccess({ user: data.user, token: data.token }))
+        // dispatch(loginSuccess({ user: data.user, token: data.token }))
         navigate("/dashboard")
       } else {
         setErrors({ email: "Invalid credentials" })

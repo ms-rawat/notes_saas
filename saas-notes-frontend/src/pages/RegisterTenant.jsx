@@ -1,40 +1,38 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
+import { PasswordInput } from "../components/BasicComps";
+import { UseApi } from "../Hooks/UseApi";
 
 export default function RegisterTenant() {
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Company name is required"),
-    slug: Yup.string().required("Unique company slug is required"),
     adminEmail: Yup.string().email("Invalid email").required("Admin email is required"),
     adminPassword: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
 
+  // Setup the mutation using your hook
+  const registerMutation = UseApi({
+    url: "/tenants/register",
+    method: "POST",
+  });
   const handleRegister = async (values, { setSubmitting, setErrors }) => {
-    try {
-      const res = await fetch("http://localhost:4000/tenants/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
+    registerMutation.mutate(values, {
+      onSuccess: (data) => {
         localStorage.setItem("token", data.token);
         navigate("/dashboard");
-      } else {
-        const errorData = await res.json();
-        setErrors({ slug: errorData.message || "Company already exists" });
-      }
-    } catch (error) {
-      setErrors({ name: "Server error. Please try again." });
-    } finally {
-      setSubmitting(false);
-    }
+      },
+      onError: (error) => {
+        setErrors({ slug: error.message || "Company already exists" });
+      },
+      onSettled: () => {
+        setSubmitting(false);
+      },
+    });
   };
 
   return (
@@ -70,25 +68,6 @@ export default function RegisterTenant() {
                 />
               </div>
 
-              {/* Company Slug */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Company Slug
-                </label>
-                <Field
-                  type="text"
-                  name="slug"
-                  className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 
-                             bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 
-                             shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2"
-                />
-                <ErrorMessage
-                  name="slug"
-                  component="div"
-                  className="text-sm text-red-500 mt-1"
-                />
-              </div>
-
               {/* Admin Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -114,7 +93,7 @@ export default function RegisterTenant() {
                   Admin Password
                 </label>
                 <Field
-                  type="password"
+                  as={PasswordInput}
                   name="adminPassword"
                   className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 
                              bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 

@@ -1,0 +1,1 @@
+export const ApiUrl = import.meta.VITE_API_URL || "http://localhost:4000";
