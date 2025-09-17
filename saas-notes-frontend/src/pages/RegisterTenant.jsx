@@ -17,7 +17,7 @@ export default function RegisterTenant() {
 
   // Setup the mutation using your hook
   const registerMutation = UseApi({
-    url: "/tenants/register",
+    url: "tenants/register",
     method: "POST",
   });
   const handleRegister = async (values, { setSubmitting, setErrors }) => {

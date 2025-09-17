@@ -3,6 +3,7 @@ import { ThemeToggle } from "./components/ThemeToggle";
 import Login from "./pages/login";
 import RegisterTenant from "./pages/RegisterTenant";
 import HomePage from "./pages/HomePage";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
 
@@ -15,8 +16,11 @@ export default function App() {
     {
       path: "/",
       element: <HomePage/>,
+    },
+    {
+      path : "/Dashboard",
+      element: <Dashboard/>
     }
-
   ])
   return (
    <RouterProvider router={router} />

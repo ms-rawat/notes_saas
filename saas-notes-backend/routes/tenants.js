@@ -6,8 +6,16 @@ const jwt = require("jsonwebtoken")
 const router = express.Router();
 
 
-router.get('/', async (req,res)=>{
-  res.status(200).json({message: "Tenant route works"})
+router.get('/SearchTenants/:SearchKeyword', async (req,res)=>{
+  const {SearchKeyword} = req.params;
+  try{
+     const getTenants = await pool.query("select * from tenants where name like $1, [SearchKeyword]")
+     res.status.apply(200).json(getTenants.rows);
+  }catch(err){
+      return res.status(500).json({error: err.message})
+    
+  }
+
 });
 
 router.post("/register", async (req, res) => {
