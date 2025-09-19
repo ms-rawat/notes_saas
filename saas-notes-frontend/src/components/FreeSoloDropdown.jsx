@@ -7,6 +7,7 @@ const FreeSoloDropdown = ({
   placeholder = "Type or select...", 
   value = "", 
   onChange = () => {},
+  onInputChange = () => {},
   className = "",
   maxHeight = "200px"
 }) => {
@@ -46,9 +47,10 @@ const FreeSoloDropdown = ({
   }, []);
 
   const handleInputChange = (e) => {
+    // console.log(e.target.value);
     const newValue = e.target.value;
     setInputValue(newValue);
-    onChange(newValue);
+    onInputChange(newValue);
     setIsOpen(true);
   };
 

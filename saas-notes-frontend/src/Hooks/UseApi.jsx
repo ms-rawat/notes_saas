@@ -3,10 +3,12 @@ import { ApiUrl } from "../StandardConst";
 
 // Generic fetcher
 async function apiRequest({ url, method = "GET", body, headers = {}, params }) {
+  console.log("API Request:", { url, method, body, params });
   // Build query string for GET requests with params
   let fullUrl = `${ApiUrl}/${url}`;
   if (params && method === "GET") {
     const qs = new URLSearchParams(params).toString();
+    console.log(qs);
     fullUrl += `?${qs}`;
   }
 
@@ -42,7 +44,7 @@ export function UseApi({ url, method = "GET", body, params, queryKey, enabled = 
 
   if (method === "GET") {
     return useQuery({
-      queryKey: queryKey || [url, params], // include params in cache key
+      queryKey: queryKey || [url, params], 
       queryFn: () => apiRequest({ url, method, params }),
       enabled,
     });

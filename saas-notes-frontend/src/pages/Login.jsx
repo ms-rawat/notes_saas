@@ -54,6 +54,7 @@ const {
   url: "tenants/SearchTenants",
   method: "GET",
   queryKey: ["SearchKeyword",keyword], // will expand with params
+  params: { SearchKeyword: keyword },
   enabled: false, // don't run automatically
 });
 
@@ -67,6 +68,7 @@ useEffect(() => {
 
 // 🔹 Search handler
 const handleTenantSearch = (keyword) => {
+  console.log(keyword)
   setKeyword(keyword);
   fetchTenant(); // will refetch with new keyword from state
 };
@@ -91,7 +93,7 @@ const handleTenantSearch = (keyword) => {
                   placeholder="Search Your Organisation"
                   value={values.tenant}
                   options={OrgList}
-                  onInputChange={handleTenantSearch} // 🔹 dynamic search
+                  onInputChange={handleTenantSearch}
                   onChange={(value) => setFieldValue("tenant", value)}
                 />
                 <ErrorMessage
