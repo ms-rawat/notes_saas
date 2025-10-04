@@ -6,12 +6,16 @@ const jwt = require("jsonwebtoken")
 const router = express.Router();
 
 
-router.get('/SearchTenants/:SearchKeyword', async (req,res)=>{
-  const {SearchKeyword} = req.params;
+router.get('/SearchTenants', async (req,res)=>{
+  const {SearchKeyword} = req.query;
   try{
-     const getTenants = await pool.query("select * from tenants where name like $1, [SearchKeyword]")
-     res.status.apply(200).json(getTenants.rows);
+    const getTenants = await pool.query(
+      "SELECT * FROM tenants WHERE name LIKE $1",
+      [`%${SearchKeyword}%`]
+    );
+     res.status(200).json(getTenants.rows);
   }catch(err){
+    console.error(err);
       return res.status(500).json({error: err.message})
     
   }

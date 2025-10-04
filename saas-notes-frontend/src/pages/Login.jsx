@@ -15,12 +15,12 @@ export default function Login() {
     password: Yup.string()
       .min(6, "Must be at least 6 characters")
       .required("Required"),
-    tenant: Yup.string().required("Select an organisation"),
+    tenant: Yup.object().nullable().required("Select an organisation"),
   });
 
   // 🔹 Mutation for login
   const { mutate: handleLogin, isPending } = UseApi({
-    url: "login",
+    url: "auth/login",
     method: "POST",
   });
 
@@ -57,11 +57,11 @@ const {
   params: { SearchKeyword: keyword },
   enabled: false, // don't run automatically
 });
-
+console.log(tenantData);
 // Keep org list updated
 useEffect(() => {
-  if (tenantData?.tenants) {
-    setOrgList(tenantData.tenants);
+  if (tenantData) {
+    setOrgList(tenantData);
   }
 }, [tenantData]);
                             
@@ -73,15 +73,13 @@ const handleTenantSearch = (keyword) => {
   fetchTenant(); // will refetch with new keyword from state
 };
 
-
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-6 text-center">Login</h2>
 
         <Formik
-          initialValues={{ tenant: "", email: "", password: "" }}
+          initialValues={{ tenant: null, email: "", password: "" }}
           validationSchema={validationSchema}
           onSubmit={onLoginSubmit}
         >

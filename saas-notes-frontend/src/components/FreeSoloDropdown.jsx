@@ -12,21 +12,28 @@ const FreeSoloDropdown = ({
   maxHeight = "200px"
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value?.name || "");
   const [filteredOptions, setFilteredOptions] = useState(options);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
-
   useEffect(() => {
-    setInputValue(value);
+    if(typeof value === 'string') {
+      setInputValue(value);
+    }else if( value && value.name)
+    {
+      setInputValue(value.name);
+    }else{
+      setInputValue('');
+    }
   }, [value]);
 
   useEffect(() => {
     if (inputValue) {
+      console.log(inputValue)
       const filtered = options.filter(option =>
-        option.toLowerCase().includes(inputValue.toLowerCase())
+        option?.name?.toLowerCase().includes(inputValue?.name?.toLowerCase())
       );
       setFilteredOptions(filtered);
     } else {
@@ -55,7 +62,7 @@ const FreeSoloDropdown = ({
   };
 
   const handleOptionClick = (option) => {
-    setInputValue(option);
+    setInputValue(option.name);
     onChange(option);
     setIsOpen(false);
     inputRef.current?.focus();
@@ -112,7 +119,7 @@ const FreeSoloDropdown = ({
         <input
           ref={inputRef}
           type="text"
-          value={inputValue}
+          value={inputValue }
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => setIsOpen(true)}
@@ -153,7 +160,7 @@ const FreeSoloDropdown = ({
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option, index) => (
                 <div
-                  key={option}
+                  key={index}
                   onClick={() => handleOptionClick(option)}
                   className={`px-3 py-2 cursor-pointer transition-colors ${
                     index === highlightedIndex
@@ -161,12 +168,12 @@ const FreeSoloDropdown = ({
                       : 'hover:bg-gray-50'
                   }`}
                 >
-                  {option}
+                  {option.name}
                 </div>
               ))
             ) : inputValue ? (
               <div className="px-3 py-2 text-gray-500 italic">
-                Press Enter to add "{inputValue}"
+                Press Enter to add "{JSON.stringify(inputValue)}"
               </div>
             ) : (
               <div className="px-3 py-2 text-gray-500 italic">

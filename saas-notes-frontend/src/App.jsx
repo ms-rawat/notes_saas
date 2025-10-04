@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import RegisterTenant from "./pages/RegisterTenant";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
+import MainLayout from "./pages/MainLayout";
 
 export default function App() {
 
@@ -14,12 +15,17 @@ export default function App() {
        element: <Login/>,
     },
     {
-      path: "/",
-      element: <HomePage/>,
+      path: "/register",
+      element: <RegisterTenant/>
     },
     {
-      path : "/Dashboard",
-      element: <Dashboard/>
+      path : "/",
+      element: <MainLayout/>,
+      children :[
+        {index : true , element:<HomePage/>},
+        {path:'dashboard', element :<Dashboard/>},
+        
+      ]
     }
   ])
   return (

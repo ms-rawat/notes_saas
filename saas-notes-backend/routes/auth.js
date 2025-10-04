@@ -14,7 +14,7 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const result = await pool.query(
-      "SELECT u.*, t.slug as tenant_slug FROM users u JOIN tenants t ON u.tenant_id = t.id WHERE u.email = $1",
+      "SELECT u.* FROM users u JOIN tenants t ON u.tenant_id = t.id WHERE u.email = $1",
       [email]
     );
 
@@ -28,7 +28,6 @@ router.post("/login", async (req, res) => {
       {
         userId: user.id,
         tenantId: user.tenant_id,
-        tenantSlug: user.tenant_slug,
         role: user.role,
         email: user.email,
       },
@@ -38,6 +37,7 @@ router.post("/login", async (req, res) => {
 
     res.json({ token });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });

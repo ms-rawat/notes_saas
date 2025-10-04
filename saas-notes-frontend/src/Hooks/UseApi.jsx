@@ -25,8 +25,8 @@ async function apiRequest({ url, method = "GET", body, headers = {}, params }) {
     const error = await res.json().catch(() => ({}));
     throw new Error(error.message || `Error: ${res.status}`);
   }
-
-  return res.json();
+const result = await res.json();
+  return result;
 }
 
 /**
@@ -41,8 +41,10 @@ async function apiRequest({ url, method = "GET", body, headers = {}, params }) {
  */
 export function UseApi({ url, method = "GET", body, params, queryKey, enabled = true }) {
   const queryClient = useQueryClient();
+  console.log("")
 
   if (method === "GET") {
+
     return useQuery({
       queryKey: queryKey || [url, params], 
       queryFn: () => apiRequest({ url, method, params }),
