@@ -22,6 +22,7 @@ export default function Login() {
   const { mutate: handleLogin, isPending } = UseApi({
     url: "auth/login",
     method: "POST",
+    credentials: "include"
   });
 
   const onLoginSubmit = (values, { setSubmitting, setErrors }) => {

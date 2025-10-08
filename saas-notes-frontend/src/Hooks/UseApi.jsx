@@ -1,9 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiUrl } from "../StandardConst";
-
+import Cookies from "js-cookie";
 // Generic fetcher
-async function apiRequest({ url, method = "GET", body, headers = {}, params }) {
+async function apiRequest({ url, method = "GET", body, headers = {}, params, }) {
   console.log("API Request:", { url, method, body, params });
+  const token = Cookies.get("token"); // read token from cookies
+
   // Build query string for GET requests with params
   let fullUrl = `${ApiUrl}/${url}`;
   if (params && method === "GET") {
@@ -14,8 +16,10 @@ async function apiRequest({ url, method = "GET", body, headers = {}, params }) {
 
   const res = await fetch(fullUrl, {
     method,
+    credentials: "include",
     headers: {
       ...(body instanceof FormData ? {} : { "Content-Type": "application/json" }),
+       ...(token ? { Authorization: `Bearer ${token}` } : {}), 
       ...headers,
     },
     body: body && method !== "GET" ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,

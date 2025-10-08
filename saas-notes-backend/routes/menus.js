@@ -6,16 +6,19 @@ const router = express.Router();
 router.get('/',auth,async(req,res)=>{
     try{
         console.log(req.user)
-        const {user_id} = req.user;
+        const {userId} = req.user;
+        console.log(userId)
 
         const query = `
-        select * from menus m join role_menus rm on rm.menu_id = m.menu_id
-        join users u on u.role_id = rm.role_id
-        where u.id = $1 and m.is_active = true
-        order by  m.parent_id, m.order_no;
+       select m.* from users u
+       join role_menus as rm on rm.role_id = u.role_id
+       JOIN menus m on rm.menu_id = m.menu_id
+       where u.id = $1
+       order by  m.parent_id, m.order_no;
         `
 
-        const {rows} = await pool.query(query, [user_id]);
+        const {rows} = await pool.query(query, [userId]);
+        console.log(rows)
 
         res.json({
             success : true,

@@ -1,10 +1,12 @@
-import { BarChart2, FileText, Menu, PlusSquare } from "lucide-react";
+import { Menu } from "lucide-react";
+import { DynamicIcon } from 'lucide-react/dynamic';
+
 import { NavLink } from "react-router";
 import UseApi from "../Hooks/UseApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Sidebar = ({ items = [], collapsed, onToggle }) => {
-
+ const [Menus,setMenus] = useState([]);
     // getting the menus from backend
     const {data,isPending,error, refetch} = UseApi({
         url : "menu/",
@@ -12,10 +14,17 @@ const Sidebar = ({ items = [], collapsed, onToggle }) => {
         enabled : false,
     })
 
+    console.log(data)
+
     useEffect(()=>{
        refetch();
     },[])
 
+    useEffect(()=>{
+       if(data) {
+           setMenus(data.data);
+       }
+    },[data])   
 
   return (
     <aside
@@ -36,63 +45,27 @@ const Sidebar = ({ items = [], collapsed, onToggle }) => {
 
       {/* Nav items */}
       <nav className="flex flex-col gap-1 mt-2">
-        <NavLink
-          to="/create"
-          className={({ isActive }) =>
+    
+
+        {/* Render extra items dynamically */}
+        {isPending && <div className="p-4 text-sm text-center">Loading...</div>}
+        {error && <div className="p-4 text-sm text-center text-red-500">Error loading menus</div>}
+
+      
+        {Menus?.map((item, idx) => (
+          <NavLink
+            key={idx}
+            to={item.path}
+             className={({ isActive }) =>
             `flex text-surface items-center gap-3 px-3 py-2 rounded-xl transition ${
               isActive
                 ? "bg-primary text-surface font-semibold"
                 : "hover:bg-accent/20 "
             }`   
           }
-        >
-          <PlusSquare size={18} className="text-surface"/>
-          {!collapsed && "Create Note"}
-        </NavLink>
-
-        <NavLink
-          to="/progress"
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-3 py-2 rounded-xl transition ${
-              isActive
-                ? "bg-primary text-surface font-semibold"
-                : "hover:bg-accent/20 "
-            }`
-          }
-        >
-          <BarChart2 size={18} />
-          {!collapsed && "Progress"}
-        </NavLink>
-
-        <NavLink
-          to="/all-notes"
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-3 py-2 rounded-xl transition ${
-              isActive
-                ? "bg-primary text-surface font-semibold"
-                : "hover:bg-accent/20"
-            }`
-          }
-        >
-          <FileText size={18} />
-          {!collapsed && "All Notes"}
-        </NavLink>
-
-        {/* Render extra items dynamically */}
-        {items.map((item, idx) => (
-          <NavLink
-            key={idx}
-            to={item.path}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-xl transition ${
-                isActive
-                  ? "bg-primary text-surface font-semibold"
-                  : "hover:bg-accent/20 "
-              }`
-            }
           >
-            {item.icon && <item.icon size={18} />}
-            {!collapsed && item.label}
+            {item.icon && <DynamicIcon name={item.icon} size={18} />}
+            {item.title}
           </NavLink>
         ))}
       </nav>

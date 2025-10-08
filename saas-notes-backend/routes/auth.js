@@ -2,7 +2,6 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../db");
-
 const router = express.Router();
 
 
@@ -35,6 +34,13 @@ router.post("/login", async (req, res) => {
       { expiresIn: "7d" }
     );
 
+     res.cookie("token",token,{
+      httpOnly : true,
+      secure : false,
+      sameSite : "lax",
+      maxAge : 24 * 60 * 60 * 1000
+
+     })
     res.json({ token });
   } catch (err) {
     console.error(err);
