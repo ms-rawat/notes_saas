@@ -5,6 +5,7 @@ import RegisterTenant from "./pages/RegisterTenant";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./pages/MainLayout";
+import UserDashboard from "./pages/UserDashboard";
 
 export default function App() {
 
@@ -24,7 +25,7 @@ export default function App() {
       children :[
         {index : true , element:<HomePage/>},
         {path:'dashboard', element :<Dashboard/>},
-        
+        {path:'userdashboard', element: <UserDashboard/>}
       ]
     }
   ])

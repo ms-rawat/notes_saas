@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const notesRoutes = require("./routes/notes");
 const tenantRoutes = require("./routes/tenants");
 const menuRoutes = require("./routes/menus");
+const notes = require("./routes/notes")
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/auth", authRoutes);
 app.use("/notes", notesRoutes);
 app.use('/tenants',tenantRoutes );
 app.use('/menu',menuRoutes);
+app.use('/notes',notes)
 
 
 const port = process.env.PORT || 4000;
