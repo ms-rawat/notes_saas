@@ -6,11 +6,11 @@ const auth = require("../middleware/auth");
 
 router.post("/",auth, async (req, res) => {
   try {
-    const {  title, body } = req.body;
+    const {  title, body,category_id } = req.body;
     const {userId : owner_id} = req.user;
     const result = await pool.query(
-      "INSERT INTO notes (owner_id, title, body) VALUES ($1, $2, $3) RETURNING *",
-      [owner_id, title, body]
+      "INSERT INTO notes (owner_id, title, body, category_id) VALUES ($1, $2, $3, $4) RETURNING *",
+      [owner_id, title, body, category_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

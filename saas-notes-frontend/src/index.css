@@ -3,37 +3,21 @@
 
 /* 🌐 Base Colors */
 :root {
-  /* Brand colors */
   --color-primary: #15304b;
-  --color-secondary: #141b24;
-
-  /* Extended palette */
+  --color-secondary: #1c2633;
   --color-accent: #ff9800;
-  --color-success: #4caf50;
-  --color-warning: #ff9800;
-  --color-error: #f44336;
-  --color-info: #2196f3;
-
-  /* Neutral shades */
-  --color-bg: #f8fafc;       /* background */
-  --color-surface: #ffffff;  /* cards, panels */
-  --color-border: #e5e7eb;   /* borders */
-  --color-muted: #9ca3af;    /* muted text */
-  --color-text: #111827;     /* main text */
+  --color-bg: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-muted: #6b7280;
+  --color-text: #111827;
 }
 
 .dark {
-  --color-primary: #3ca111;
+ --color-primary: #3ca111;
   --color-secondary: #0e3e7c;
-
-  --color-accent: #ffb74d;
-  --color-success: #81c784;
-  --color-warning: #ffb74d;
-  --color-error: #e57373;
-  --color-info: #64b5f6;
-
-  --color-bg: #0f172a;       /* dark background */
-  --color-surface: #1e293b;  /* dark cards */
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
   --color-border: #334155;
   --color-muted: #94a3b8;
   --color-text: #f1f5f9;
