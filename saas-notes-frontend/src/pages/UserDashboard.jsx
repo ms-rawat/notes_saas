@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Table, Tag, Progress } from "antd";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Bell, FileText, User, Edit } from "lucide-react";
+import UseApi from "../Hooks/UseApi";
 
 const UserDashboard = () => {
   const pieData = [
@@ -9,7 +10,7 @@ const UserDashboard = () => {
     { name: "Work Notes", value: 25 },
     { name: "Archived", value: 10 },
   ];
-
+  const {data: notesStatics} = UseApi({url:"notes/stats",method:"GET",enabled:true})
   const COLORS = ["#15304b", "#ff9800", "#4caf50"];
 
   const columns = [
@@ -26,14 +27,14 @@ const UserDashboard = () => {
     },
     {
       title: "Category",
-      dataIndex: "category",
-      key: "category",
+      dataIndex: "category_name",
+      key: "category_name",
       render: (cat) => <Tag color="blue">{cat}</Tag>,
     },
     {
       title: "Last Updated",
-      dataIndex: "updated_at",
-      key: "updated_at",
+      dataIndex: "created_at",
+      key: "created_a",
     },
     {
       title: "Actions",
@@ -50,7 +51,9 @@ const UserDashboard = () => {
     { key: "3", title: "App Roadmap", category: "Work", updated_at: "Oct 4, 2025" },
   ];
 
-  
+  const {data : recentNotes } = UseApi({url:'notes/recent',method:'GET'});
+  console.log(recentNotes)
+
 
   return (
     <div className="min-h-screen bg-bg text-surface p-6">
@@ -69,7 +72,7 @@ const UserDashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted">Total Notes</p>
-              <h2 className="text-2xl font-semibold text-secondary">124</h2>
+              <h2 className="text-2xl font-semibold text-secondary">{notesStatics?.count}</h2>
             </div>
             <FileText className="text-secondary" size={32} />
           </div>
@@ -122,7 +125,7 @@ const UserDashboard = () => {
           <h3 className="text-lg font-semibold mb-4 text-secondary">Recent Notes</h3>
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={recentNotes?.data}
             pagination={false}
             rowClassName="hover:bg-bg"
           />

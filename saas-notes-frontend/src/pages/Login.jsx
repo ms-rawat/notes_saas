@@ -92,8 +92,8 @@ const handleTenantSearch = (keyword) => {
                   placeholder="Search Your Organisation"
                   value={values.tenant}
                   options={OrgList}
-                  onInputChange={handleTenantSearch}
-                  onChange={(value) => setFieldValue("tenant", value)}
+                  onInputChange={(val)=>handleTenantSearch(val)}
+                  onChange={(value) =>setFieldValue("tenant", value)}
                 />
                 <ErrorMessage
                   name="tenant"

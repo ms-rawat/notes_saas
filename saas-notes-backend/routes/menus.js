@@ -5,9 +5,7 @@ const router = express.Router();
 
 router.get('/',auth,async(req,res)=>{
     try{
-        console.log(req.user)
         const {userId} = req.user;
-        console.log(userId)
 
         const query = `
        select m.* from users u
@@ -18,7 +16,6 @@ router.get('/',auth,async(req,res)=>{
         `
 
         const {rows} = await pool.query(query, [userId]);
-        console.log(rows)
 
         res.json({
             success : true,
@@ -26,7 +23,6 @@ router.get('/',auth,async(req,res)=>{
         })
     }catch(err)
     {
-        console.log(err)
         res.status(500).json({error:err.message})
     }
 })
