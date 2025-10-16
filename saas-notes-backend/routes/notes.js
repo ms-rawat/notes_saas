@@ -46,19 +46,49 @@ router.get("/recent", auth, async (req, res) => {
 
 //create note
 router.post("/", auth, async (req, res) => {
+  console.log(req.body)
+  const { id, title, body, category_id } = req.body;
+  const { userId: owner_id } = req.user;
+
   try {
-    const { title, body, category_id } = req.body;
-    const { userId: owner_id } = req.user;
-    const result = await pool.query(
-      "INSERT INTO notes (owner_id, title, body, category_id) VALUES ($1, $2, $3, $4) RETURNING *",
-      [owner_id, title, body, category_id]
-    );
-    res.status(201).json(result.rows[0]);
+    if (!title?.trim()) {
+      return res.status(400).json({ error: "Title is required" });
+    }
+
+    const query = id
+      ? {
+          text: `
+            UPDATE notes 
+            SET title = $1, body = $2, category_id = $3, updated_at = NOW()
+            WHERE id = $4 AND owner_id = $5
+            RETURNING *;
+          `,
+          values: [title, body || "", category_id || null, id, owner_id],
+        }
+      : {
+          text: `
+            INSERT INTO notes (owner_id, title, body, category_id)
+            VALUES ($1, $2, $3, $4)
+            RETURNING *;
+          `,
+          values: [owner_id, title, body || "", category_id || null],
+        };
+
+    const { rows, rowCount } = await pool.query(query);
+
+    if (id && rowCount === 0)
+      return res.status(404).json({ error: "Note not found or not authorized" });
+
+    res.status(id ? 200 : 201).json({
+      message: id ? "Note updated successfully" : "Note created successfully",
+      note: rows[0],
+    });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Server error" });
+    console.error("❌ Note save failed:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 
 router.get("/", async (req, res) => {
@@ -144,9 +174,9 @@ router.put("/:id", async (req, res) => {
 });
 
 
-router.delete("/:id", async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const result = await pool.query("DELETE FROM notes WHERE id = $1 RETURNING *", [id]);
 
     if (result.rows.length === 0) return res.status(404).json({ error: "Note not found" });

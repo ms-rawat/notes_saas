@@ -8,11 +8,13 @@ import { isPending } from "@reduxjs/toolkit";
 const NoteFormModal = ({ visible, onClose, onSubmit, initialValues }) => {
     const isEditMode = !!initialValues?.id;
     const { data: categories, isPending } = UseApi({ url: 'categories' })
+    console.log(initialValues)
     const formik = useFormik({
         initialValues: {
+            id : initialValues?.id || "",
             title: initialValues?.title || "",
             body: initialValues?.body || "",
-            category: initialValues?.category || "",
+            category: initialValues?.category_id || "",
             owner_id: initialValues?.owner_id || "",
         },
         validationSchema: Yup.object({
@@ -23,6 +25,7 @@ const NoteFormModal = ({ visible, onClose, onSubmit, initialValues }) => {
         }),
         onSubmit: (values, { resetForm }) => {
             onSubmit(values, isEditMode);
+            onClose()
             resetForm();
         },
         enableReinitialize: true,
@@ -34,7 +37,7 @@ const NoteFormModal = ({ visible, onClose, onSubmit, initialValues }) => {
             title={isEditMode ? "Edit Note" : "Create Note"}
             onCancel={onClose}
             footer={null}
-            destroyOnClose
+            destroyOnHidden
         >
             <Form layout="vertical" onFinish={formik.handleSubmit}>
                 <Form.Item

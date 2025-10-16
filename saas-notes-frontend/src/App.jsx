@@ -25,8 +25,7 @@ export default function App() {
       element: <MainLayout/>,
       children :[
         {index : true , element:<HomePage/>},
-        {path:'dashboard', element :<Dashboard/>},
-        {path:'userdashboard', element: <UserDashboard/>},
+        {path:'dashboard', element :<UserDashboard/>},
         {path : 'notes',element: <NotesPage/>}
       ]
     }

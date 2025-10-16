@@ -45,11 +45,6 @@ const UserDashboard = () => {
     },
   ];
 
-  const data = [
-    { key: "1", title: "Meeting Notes", category: "Work", updated_at: "Oct 7, 2025" },
-    { key: "2", title: "Grocery List", category: "Personal", updated_at: "Oct 6, 2025" },
-    { key: "3", title: "App Roadmap", category: "Work", updated_at: "Oct 4, 2025" },
-  ];
 
   const {data : recentNotes } = UseApi({url:'notes/recent',method:'GET'});
   console.log(recentNotes)
@@ -60,35 +55,38 @@ const UserDashboard = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-secondary">Welcome back 👋</h1>
+          <h1 className="text-2xl font-semibold text-text">Welcome back 👋</h1>
           <p className="text-muted">Here’s an overview of your notes.</p>
         </div>
-        <Bell className="text-secondary cursor-pointer" size={22} />
+        <Bell className="text-accent cursor-pointer" size={22} />
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Card className="rounded-2xl shadow-sm bg-secondary border border-border">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted">Total Notes</p>
-              <h2 className="text-2xl font-semibold text-secondary">{notesStatics?.count}</h2>
-            </div>
-            <FileText className="text-secondary" size={32} />
-          </div>
-        </Card>
+  <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
+  <div className="flex items-center justify-between">
+    <div className="space-y-1">
+      <p className="text-sm font-medium text-muted text-nowrap">Total Notes</p>
+      <h2 className="text-3xl font-bold text-text">{notesStatics?.count || 0}</h2>
+    </div>
+    <div className="p-3 rounded-xl bg-primary/10 text-text">
+      <FileText size={28} strokeWidth={1.8} />
+    </div>
+  </div>
+</div>
 
-        <Card className="rounded-2xl shadow-sm bg-secondary border border-border">
+
+  <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted">Active Categories</p>
-              <h2 className="text-2xl font-semibold text-secondary">8</h2>
+              <h2 className="text-2xl font-semibold text-text">8</h2>
             </div>
-            <User className="text-success" size={32} />
+            <User className="text-text" size={32} />
           </div>
-        </Card>
+        </div>
 
-        <Card className="rounded-2xl shadow-sm bg-secondary border border-border">
+  <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted">Storage Used</p>
@@ -101,14 +99,14 @@ const UserDashboard = () => {
               <p className="text-xs mt-1 text-muted">68% used</p>
             </div>
           </div>
-        </Card>
+        </div>
       </div>
 
       {/* Content Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Notes Chart */}
-        <Card className="col-span-1 lg:col-span-1 rounded-2xl shadow-sm bg-secondary border border-border">
-          <h3 className="text-lg font-semibold mb-4 text-secondary">Notes Breakdown</h3>
+        <div className="col-span-1 lg:col-span-1 rounded-2xl shadow-sm bg-surface border border-border">
+          <h3 className="text-lg font-semibold mb-4 p-2 text-text">Notes Breakdown</h3>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
@@ -118,18 +116,19 @@ const UserDashboard = () => {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
-        </Card>
+        </div>
 
         {/* Recent Notes Table */}
-        <Card className="col-span-1 lg:col-span-2 rounded-2xl shadow-sm bg-secondary border border-border">
-          <h3 className="text-lg font-semibold mb-4 text-secondary">Recent Notes</h3>
+        <div className="col-span-1 lg:col-span-2 rounded-2xl shadow-sm bg-surface border border-border">
+          <h3 className="text-lg font-semibold mb-4 text-text p-2">Recent Notes</h3>
           <Table
             columns={columns}
             dataSource={recentNotes?.data}
             pagination={false}
             rowClassName="hover:bg-bg"
+            
           />
-        </Card>
+        </div>
       </div>
     </div>
   );

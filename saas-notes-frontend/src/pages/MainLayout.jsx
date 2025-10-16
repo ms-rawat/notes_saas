@@ -4,10 +4,12 @@ import Sidebar from "../components/sidebar"
 const MainLayout = () => {
     return (
 
-        <div className="flex min-h-screen bg-gray-50 text-gray-900">
+        <div className="grid min-h-screen grid-cols-[260px_1fr] bg-gray-50 text-gray-900">
+           <span className="h-screen sticky top-0 border-r bg-white">
+                        <Sidebar />
 
-            <Sidebar />
-            <main className="flex-1 p-6 overflow-y-auto">   
+           </span>
+            <main className="overflow-y-auto">   
                      <Outlet />
             </main>
         </div>

@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiUrl } from "../StandardConst";
 import Cookies from "js-cookie";
 // Generic fetcher
-async function apiRequest({ url, method = "GET", body, headers = {}, params, }) {
+async function apiRequest({ url, method = "GET", body, headers = {}, params }) {
   console.log("API Request:", { url, method, body, params });
   const token = Cookies.get("token"); // read token from cookies
 
@@ -64,7 +64,7 @@ export function UseApi({ url, method = "GET", body, params, queryKey, enabled = 
         queryClient.invalidateQueries({ queryKey });
       }
     },
-  });
+  }); 
 }
 
 export default UseApi;
