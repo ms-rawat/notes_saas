@@ -1,9 +1,9 @@
 // store/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import { ApiUrl } from "../StandardConst";
 // Check if user is authenticated (backend reads JWT from cookie)
 export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
-  const res = await fetch("http://localhost:4000/api/me", {
+  const res = await fetch(`${ApiUrl}/api/me`, {
     credentials: "include", // send cookies
   });
   if (!res.ok) throw new Error("Not authenticated");

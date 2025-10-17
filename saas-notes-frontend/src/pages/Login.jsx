@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { UseApi } from "../Hooks/UseApi";
 import FreeSoloDropdown from "../components/FreeSoloDropdown";
 import { useState, useEffect } from "react";
+import { ApiUrl } from "../StandardConst";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -44,6 +45,10 @@ export default function Login() {
   };
 
   const [keyword, setKeyword] = useState("");
+  const apiUrl = import.meta.env.VITE_API_URL;
+  console.log(apiUrl);
+
+  console.log(import.meta.env.VITE_API_KEY)
 
 // 🔹 Query for fetching tenants
 const {
