@@ -8,8 +8,8 @@
   --color-accent: #ffb74d;    /* Warm amber to highlight positivity */
 
   /* 🌤 Background & Surfaces */
-  --color-bg: #f4f6f9;        /* Calm paper-like white */
-  --color-surface: rgba(75, 79, 136, 0.7); /* glass effect */
+  --color-bg: #f4a4a4;        /* Calm paper-like white */
+  --color-surface: rgba(87, 235, 191, 0.869); /* glass effect */
   --color-border: rgba(0, 0, 0, 0.08);       /* subtle */
   --color-muted: #6b7280;
   --color-text: #111827;
@@ -56,4 +56,30 @@
   --color-border: var(--color-border);
   --color-muted: var(--color-muted);
   --color-text: var(--color-text);
+}
+
+
+.custom-table .ant-table-thead > tr > th {
+  background-color: var(--color-surface) ; 
+  color: var(--color-text);  
+            
+}
+
+.custom-table .ant-table-tbody > tr > td {
+  background-color: var(--color-surface); 
+  color:var(--color-text) ;
+}
+
+/* Hover effect for rows */
+/* .custom-table .ant-table-tbody > tr:hover > td {
+  background-color: var(--color-muted);
+    color:var(--color-text) ;
+ 
+} */
+
+
+.custom-select .ant-select-selector {
+  height: 40px !important; /* Adjust as needed */
+  display: flex; /* Ensures content aligns vertically */
+  align-items: center; /* Centers content vertically */
 }

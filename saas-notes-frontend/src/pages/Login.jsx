@@ -98,7 +98,8 @@ const handleTenantSearch = (keyword) => {
                   value={values.tenant}
                   options={OrgList}
                   onInputChange={(val)=>handleTenantSearch(val)}
-                  onChange={(value) =>setFieldValue("tenant", value)}
+                  onSelect={(value) =>setFieldValue("tenant", value)}
+
                 />
                 <ErrorMessage
                   name="tenant"

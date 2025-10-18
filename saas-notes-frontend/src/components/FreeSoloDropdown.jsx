@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Select, Input } from "antd";
 import { ChevronDown, X } from "lucide-react";
 
@@ -8,7 +8,7 @@ const FreeSoloDropdown = ({
   options = [],
   placeholder = "Type or select...",
   value = "",
-  onChange = () => {},
+  onSelect = () => {},
   onInputChange = () => {},
   className = "",
   allowCustom = true, // allow new items
@@ -17,19 +17,22 @@ const FreeSoloDropdown = ({
 
   const handleChange = (newValue) => {
     setInputValue(newValue);
-    onChange({ name: newValue });
+    onSelect({ name: newValue });
   };
 
   const handleSearch = (text) => {
-     console.log(text)
-    setInputValue(text);
     onInputChange(text);
   };
 
   const handleClear = () => {
     setInputValue("");
-    onChange("");
+    onSelect("");
   };
+
+  useEffect(() => {
+    onInputChange(inputValue);
+  }, [inputValue]);
+
 
   return (
     <div className={`relative w-full ${className}`}>
@@ -38,10 +41,10 @@ const FreeSoloDropdown = ({
         value={inputValue}
         placeholder={placeholder}
         onChange={handleChange}
-        onSearch={handleSearch}
+        onSearch={(v)=>setInputValue(v)}
         allowClear
         suffixIcon={<ChevronDown className="text-gray-400" size={16} />}
-        className="w-full text-sm rounded-md shadow-sm"
+        className="w-full text-sm rounded-md shadow-sm custom-select"
         optionFilterProp="children"
         filterOption={(input, option) =>
           option.children.toLowerCase().includes(input.toLowerCase())
@@ -79,4 +82,4 @@ const FreeSoloDropdown = ({
   );
 };
 
-export default FreeSoloDropdown;
+export default React.memo(FreeSoloDropdown);

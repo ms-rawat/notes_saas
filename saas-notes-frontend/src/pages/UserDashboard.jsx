@@ -126,6 +126,7 @@ const UserDashboard = () => {
             dataSource={recentNotes?.data}
             pagination={false}
             rowClassName="hover:bg-bg"
+            className="custom-table"
             
           />
         </div>
