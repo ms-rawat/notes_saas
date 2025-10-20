@@ -10,7 +10,7 @@ const UserDashboard = () => {
     { name: "Work Notes", value: 25 },
     { name: "Archived", value: 10 },
   ];
-  const {data: notesStatics} = UseApi({url:"notes/stats",method:"GET",enabled:true})
+  const { data: notesStatics } = UseApi({ url: "notes/stats", method: "GET", enabled: true })
   const COLORS = ["#15304b", "#ff9800", "#4caf50"];
 
   const columns = [
@@ -46,7 +46,7 @@ const UserDashboard = () => {
   ];
 
 
-  const {data : recentNotes } = UseApi({url:'notes/recent',method:'GET'});
+  const { data: recentNotes } = UseApi({ url: 'notes/recent', method: 'GET' });
   console.log(recentNotes)
 
 
@@ -55,7 +55,7 @@ const UserDashboard = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-text">Welcome back 👋</h1>
+          <h1 className="text-2xl font-semibold text-text">Welcome back 👋 </h1>
           <p className="text-muted">Here’s an overview of your notes.</p>
         </div>
         <Bell className="text-accent cursor-pointer" size={22} />
@@ -63,20 +63,20 @@ const UserDashboard = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-  <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
-  <div className="flex items-center justify-between">
-    <div className="space-y-1">
-      <p className="text-sm font-medium text-muted text-nowrap">Total Notes</p>
-      <h2 className="text-3xl font-bold text-text">{notesStatics?.count || 0}</h2>
-    </div>
-    <div className="p-3 rounded-xl bg-primary/10 text-text">
-      <FileText size={28} strokeWidth={1.8} />
-    </div>
-  </div>
-</div>
+        <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-muted text-nowrap">Total Notes</p>
+              <h2 className="text-3xl font-bold text-text">{notesStatics?.count || 0}</h2>
+            </div>
+            <div className="p-3 rounded-xl bg-primary/10 text-text">
+              <FileText size={28} strokeWidth={1.8} />
+            </div>
+          </div>
+        </div>
 
 
-  <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
+        <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted">Active Categories</p>
@@ -86,7 +86,7 @@ const UserDashboard = () => {
           </div>
         </div>
 
-  <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
+        <div className="p-5 rounded-2xl border border-border bg-surface/80 backdrop-blur-glass-blur shadow-glass-shadow transition-all hover:shadow-lg hover:-translate-y-1">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted">Storage Used</p>
@@ -127,7 +127,7 @@ const UserDashboard = () => {
             pagination={false}
             rowClassName="hover:bg-bg"
             className="custom-table"
-            
+
           />
         </div>
       </div>

@@ -113,11 +113,11 @@ const NotesPage = () => {
         }
     }
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="p-6  min-h-screen">
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h1 className="text-2xl font-semibold text-gray-800">All Notes</h1>
+                    <h1 className="text-2xl font-semibold text-gray-800">All Notes </h1>
                     <p className="text-gray-500 text-sm">Manage and organize your notes easily.</p>
                 </div>
                 <div>
