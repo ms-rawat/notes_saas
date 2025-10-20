@@ -78,8 +78,8 @@
 } */
 
 
-.custom-select .ant-select-selector {
-  height: 40px !important; /* Adjust as needed */
-  display: flex; /* Ensures content aligns vertically */
-  align-items: center; /* Centers content vertically */
-}
+/* .custom-select .ant-select-selector {
+  height: 40px !important; 
+  display: flex; 
+  align-items: center; 
+} */

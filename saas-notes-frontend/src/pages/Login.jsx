@@ -1,163 +1,185 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
 import { UseApi } from "../Hooks/UseApi";
-import FreeSoloDropdown from "../components/FreeSoloDropdown";
 import { useState, useEffect } from "react";
-import { ApiUrl } from "../StandardConst";
+import { Input, Button, Card, Typography, Spin, Select } from "antd";
+import { MailOutlined, LockOutlined, ApartmentOutlined } from "@ant-design/icons";
+import GalaxyBackground from "../components/GalaxyBackground";
+
+const { Title, Text } = Typography;
 
 export default function Login() {
   const navigate = useNavigate();
   const [OrgList, setOrgList] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
-  // 🔹 Validation schema
+  // ✅ Validation Schema
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string()
-      .min(6, "Must be at least 6 characters")
-      .required("Required"),
+    password: Yup.string().min(6, "Must be at least 6 characters").required("Required"),
     tenant: Yup.object().nullable().required("Select an organisation"),
   });
 
-  // 🔹 Mutation for login
+  // ✅ Login API
   const { mutate: handleLogin, isPending } = UseApi({
     url: "auth/login",
     method: "POST",
-    credentials: "include"
+    credentials: "include",
   });
 
-  const onLoginSubmit = (values, { setSubmitting, setErrors }) => {
-    handleLogin(values, {
-      onSuccess: (data) => {
-        // Store token here if API returns one
-        // localStorage.setItem("token", data.token);
-        navigate("/dashboard");
-      },
-      onError: (error) => {
-        setErrors({
-          email: error.message || "Invalid credentials or server error",
-        });
-      },
-      onSettled: () => {
-        setSubmitting(false);
-      },
-    });
+  // ✅ Tenant API
+  const {
+    data: tenantData,
+    isPending: isTenantLoading,
+    error: tenantError,
+    refetch: fetchTenant,
+  } = UseApi({
+    url: "tenants/SearchTenants",
+    method: "GET",
+    queryKey: ["SearchKeyword", keyword],
+    params: { SearchKeyword: keyword },
+    enabled: false, // fetch only on search
+  });
+
+  // ✅ Update org list when data changes
+  useEffect(() => {
+    if (tenantData) setOrgList(tenantData);
+  }, [tenantData]);
+
+  // ✅ Search handler for Select
+  const handleTenantSearch = (value) => {
+    console.log(value)
+    setKeyword(value);
+    if (value && value.trim().length > 1) {
+      fetchTenant();
+    }
   };
 
-  const [keyword, setKeyword] = useState("");
-  const apiUrl = import.meta.env.VITE_API_URL;
-  console.log(apiUrl);
+  // ✅ Formik setup
+  const formik = useFormik({
+    initialValues: {
+      tenant: null,
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: (values, { setSubmitting, setErrors }) => {
+      handleLogin(values, {
+        onSuccess: () => navigate("/dashboard"),
+        onError: (error) => {
+          setErrors({
+            email: error.message || "Invalid credentials or server error",
+          });
+        },
+        onSettled: () => setSubmitting(false),
+      });
+    },
+  });
 
-  console.log(import.meta.env.VITE_API_KEY)
-
-// 🔹 Query for fetching tenants
-const {
-  data: tenantData,
-  isPending: isTenantLoading,
-  error: tenantError,
-  refetch: fetchTenant,
-} = UseApi({
-  url: "tenants/SearchTenants",
-  method: "GET",
-  queryKey: ["SearchKeyword",keyword], // will expand with params
-  params: { SearchKeyword: keyword },
-  enabled: false, // don't run automatically
-});
-console.log(tenantData);
-// Keep org list updated
-useEffect(() => {
-  if (tenantData) {
-    setOrgList(tenantData);
-  }
-}, [tenantData]);
-                            
-
-// 🔹 Search handler
-const handleTenantSearch = (keyword) => {
-  console.log(keyword)
-  setKeyword(keyword);
-  fetchTenant(); // will refetch with new keyword from state
-};
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+    errors,
+    touched,
+  } = formik;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-xl font-bold mb-6 text-center">Login</h2>
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      {/* 🌌 Animated Background */}
+      <GalaxyBackground />
 
-        <Formik
-          initialValues={{ tenant: null, email: "", password: "" }}
-          validationSchema={validationSchema}
-          onSubmit={onLoginSubmit}
-        >
-          {({ values, setFieldValue }) => (
-            <Form className="space-y-4">
-              {/* Tenant Search */}
-              <div>
-                <FreeSoloDropdown
-                  placeholder="Search Your Organisation"
-                  value={values.tenant}
-                  options={OrgList}
-                  onInputChange={(val)=>handleTenantSearch(val)}
-                  onSelect={(value) =>setFieldValue("tenant", value)}
+      {/* Login Card */}
+      <Card className="relative z-10 w-full max-w-md rounded-lg shadow-lg bg-white/90 dark:bg-gray-800/80 backdrop-blur">
+        <Title level={3} className="text-center text-gray-900 dark:text-gray-100 mb-6">
+          Login
+        </Title>
 
-                />
-                <ErrorMessage
-                  name="tenant"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* 🔹 Organisation Select (AntD) */}
+          <div>
+            <Select
+              showSearch
+              allowClear
+              placeholder="Search Your Organisation"
+              suffixIcon={<ApartmentOutlined />}
+              value={values.tenant?.id}
+              onSearch={handleTenantSearch}
+              onChange={(value) => {
+                const selected = OrgList.find((org) => org.id === value);
+                setFieldValue("tenant", selected || null);
+              }}
+              filterOption={false}
+              loading={isTenantLoading}
+              style={{ width: "100%" }}
+              options={OrgList.map((org) => ({
+                label: org.name,
+                value: org.id,
+              }))}
+            />
+            {touched.tenant && errors.tenant && (
+              <Text type="danger" className="text-sm">
+                {errors.tenant}
+              </Text>
+            )}
+          </div>
 
-              {/* Email */}
-              <div>
-                <Field
-                  as="input"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  className="w-full border rounded p-2"
-                />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
+          {/* 🔹 Email */}
+          <div>
+            <Input
+              prefix={<MailOutlined />}
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {touched.email && errors.email && (
+              <Text type="danger" className="text-sm">
+                {errors.email}
+              </Text>
+            )}
+          </div>
 
-              {/* Password */}
-              <div>
-                <Field
-                  as="input"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  className="w-full border rounded p-2"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
+          {/* 🔹 Password */}
+          <div>
+            <Input.Password
+              prefix={<LockOutlined />}
+              name="password"
+              placeholder="Password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {touched.password && errors.password && (
+              <Text type="danger" className="text-sm">
+                {errors.password}
+              </Text>
+            )}
+          </div>
 
-              {/* Submit */}
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded"
-                disabled={isPending}
-              >
-                {isPending ? "Logging in..." : "Login"}
-              </button>
-            </Form>
-          )}
-        </Formik>
+          {/* 🔹 Submit Button */}
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            loading={isPending}
+          >
+            {isPending ? "Logging in..." : "Login"}
+          </Button>
+        </form>
 
-        {/* Debug/Error */}
-        {isTenantLoading && <p>Loading tenants...</p>}
+        {/* 🔹 Error States */}
         {tenantError && (
-          <p className="text-red-500">{tenantError.message}</p>
+          <Text type="danger" className="block mt-2 text-center">
+            {tenantError.message}
+          </Text>
         )}
-      </div>
+      </Card>
     </div>
   );
 }
