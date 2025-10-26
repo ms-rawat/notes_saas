@@ -40,12 +40,12 @@ return (
         onClick={onToggle}
         className=" flex items-center justify-center hover:bg-accent/20 rounded-xl transition"
       >
-        <Menu size={20} className="text-textbg" />
+        <Menu size={20} className="text-textprimary" />
       </button>
 
       {/* Center Logo */}
       {!collapsed && (
-        <h2 className="LogoText text-xl ms-4 font-semibold tracking-wide transition-opacity text-textbg duration-300">
+        <h2 className="LogoText text-xl ms-4 font-semibold tracking-wide transition-opacity text-textprimary duration-300">
           NotesVerse
         </h2>
       )}
@@ -78,10 +78,10 @@ return (
             <DynamicIcon
               name={item.icon}
               size={18}
-              className="shrink-0 text-on-bg"
+              className="shrink-0 text-textprimary"
             />
           )}
-          {!collapsed && <span className="truncate">{item.title}  </span>}
+          {!collapsed && <span className="truncate text-textsecondary">{item.title}  </span>}
         </NavLink>
       ))}
     </nav>

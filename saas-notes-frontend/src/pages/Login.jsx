@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { UseApi } from "../Hooks/UseApi";
 import { useState, useEffect } from "react";
 import { Input, Button, Typography, Checkbox, Select } from "antd";
@@ -186,9 +186,9 @@ export default function Login() {
 
             <div className="flex justify-between items-center text-sm">
               <Checkbox>Remember me</Checkbox>
-              <a href="#" className="text-blue-600 hover:underline">
+              <Link to="/forgot-password" className="text-blue-600 hover:underline">
                 Forgot Password?
-              </a>
+              </Link>
             </div>
 
             <Button

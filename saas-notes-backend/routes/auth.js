@@ -2,7 +2,9 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../db");
+const auth = require("../middleware/auth");
 const router = express.Router();
+const crypto = require('crypto');
 
 
 router.get('/', async (req,res)=>{
@@ -95,5 +97,41 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+router.post("/forgot-password", async(req,res)=>{
+  const {email} = req.body;
+try{
+  const userResult = await pool.query("SELECT id FROM users WHERE email = $1",[email]);
+  
+  console.log(userResult)
+  if(userResult.rows.length === 0)
+  {
+      return res.status(200).json({ message: "Reset link sent if the email exists" });
+  }
+
+  const user = userResult.rows[0];
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const hashToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+  const tokenExpiry = new Date(Date.now() + 10 * 60 * 1000);
+  
+  await pool.query("Update users set reset_token = $1,  reset_token_expires = $2 where id = $3",[hashToken,tokenExpiry,user.id] )
+  
+  const resetLink = "/rest-password?token=" + resetToken;
+  
+  // Send email
+    await sendEmail({
+      to: user.email,
+      subject: "NotesVerse Password Reset",
+      text: `Hi ${user.name},\n\nClick the link below to reset your password:\n${resetLink}\n\nIf you didn’t request this, please ignore it.`,
+    });
+
+    res.status(200).json({ message: "Password reset link sent!" });
+
+  }
+  catch(err){
+    console.log(err)
+    res.status(500).json({error:err.message})
+  }
+
+})
 
 module.exports = router;

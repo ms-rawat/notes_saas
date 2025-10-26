@@ -7,6 +7,7 @@ import MainLayout from "./pages/MainLayout";
 import UserDashboard from "./pages/UserDashboard";
 import NotesPage from "./pages/NotesPage";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
 
@@ -19,6 +20,10 @@ export default function App() {
     {
       path: "/register",
       element: <RegisterTenant/>
+    },
+    {
+      path: "/forgot-password",
+      element: <ForgotPassword/>
     },
     {
       path : "/",

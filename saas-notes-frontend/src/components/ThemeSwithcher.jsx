@@ -45,6 +45,7 @@ export function ThemeSwitcher() {
       style={{
         boxShadow: "0 0 20px var(--color-accent)",
       }}
+      title={current?.label}
     >
       <div
         className="
