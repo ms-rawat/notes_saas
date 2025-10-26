@@ -1,12 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { ThemeToggle } from "./components/ThemeToggle";
-import Login from "./pages/login";
 import RegisterTenant from "./pages/RegisterTenant";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./pages/MainLayout";
 import UserDashboard from "./pages/UserDashboard";
 import NotesPage from "./pages/NotesPage";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
 
@@ -19,6 +20,10 @@ export default function App() {
     {
       path: "/register",
       element: <RegisterTenant/>
+    },
+    {
+      path: "/forgot-password",
+      element: <ForgotPassword/>
     },
     {
       path : "/",

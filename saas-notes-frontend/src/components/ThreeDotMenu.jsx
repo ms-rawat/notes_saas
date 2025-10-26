@@ -7,6 +7,7 @@ import {
   EyeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import { EllipsisVertical } from "lucide-react";
 
 /**
  * 🌟 ThreeDotMenu Component (Advanced)
@@ -27,7 +28,7 @@ import {
 
 const ThreeDotMenu = ({
   items = [],
-  icon = <MoreOutlined />,
+  icon = <EllipsisVertical color="var(--color-text)" />,
   placement = "bottomRight",
   type = "text",
   size = "middle",

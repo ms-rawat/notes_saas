@@ -1,43 +1,121 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant theme-dark-neon (&:where(.theme-dark-neon, .theme-dark-neon *));
+@custom-variant theme-cyber (&:where(.theme-cyber, .theme-cyber *));
+@custom-variant theme-aurora (&:where(.theme-aurora, .theme-aurora *));
+@custom-variant theme-midnight (&:where(.theme-midnight, .theme-midnight *));
+
 
 :root {
-  /* 🔷 Core Brand */
-  --color-primary: #1b3a57;   /* Deep focus blue */
-  --color-secondary: #2b4159; /* Balanced, cool grounding */
-  --color-accent: #ffb74d;    /* Warm amber to highlight positivity */
+  /* 🌤 Default Theme — Soft Modern Glass */
+--color-primary: #f7f7f7;
+  --color-secondary: #ec4899;
+  --color-accent: #fbbf24;
+  --color-bg: #fdf2f8;
+  --color-surface: rgba(255, 242, 248, 0.85);
+  --color-border: rgba(217, 70, 239, 0.15);
+  --color-muted: #9ca3af;
+  --color-text: #1f2937;
+  --glass-blur: 20px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.4);
 
-  /* 🌤 Background & Surfaces */
-  --color-bg: #f4f6f9;        /* Calm paper-like white */
-  --color-surface: rgba(75, 79, 136, 0.7); /* glass effect */
-  --color-border: rgba(0, 0, 0, 0.08);       /* subtle */
-  --color-muted: #6b7280;
-  --color-text: #111827;
-
-  /* ✨ Glassmorphism support */
-  --glass-blur: 16px;
-  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.25);
+  /* 🖋️ Text contrast colors */
+  --color-textprimary: #111827;
+  --color-textsecondary: #374151;
+  --color-textaccent: #ffffff;
+  --color-textbg: #f9fafb;
+  --color-textsurface: #111827;
 }
 
-.dark {
-  /* 🔷 Core Brand (Dark) */
-  --color-primary: #16293d;   /* Deep steel blue */
-  --color-secondary: #1c2f47; /* Muted marine blue */
-  --color-accent: #ffb74d;    /* Warm glow accent */
+/* 🌑 Dark-Neon Theme — Updated */
+.theme-dark-neon {
+  --color-primary: #192239;
+  --color-secondary: #1b2d58;
+  --color-accent: #00eaff;
+  --color-bg: #020617;
+  --color-surface: rgba(10, 15, 28, 0.7);
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-muted: #cbd5e1;
+  --color-text: #f8fafc;
+  --glass-blur: 18px;
+  --glass-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
+  --glass-border: 1px solid rgba(0, 255, 255, 0.15);
 
-  /* 🌑 Backgrounds */
-  --color-bg: #0f172a; 
-  --color-surface: rgba(47, 66, 96, 0.5); /* translucent glass */
+  /* 🖋️ Text contrast colors - Updated */
+  --color-textprimary: #f8fafc;
+  --color-textsecondary: #cbd5e1;
+  --color-textaccent: #00eaff;
+  --color-textbg: #f8fafc;
+  --color-textsurface: #f8fafc;
+}
+
+/* 💜 Cyber Theme — Purple/Blue Glow */
+.theme-cyber {
+  --color-primary: #1f0026;
+  --color-secondary: #260040;
+  --color-accent: #ff00ff;
+  --color-bg: #0a0014;
+  --color-surface: rgba(50, 0, 80, 0.6);
+  --color-border: rgba(255, 0, 255, 0.1);
+  --color-muted: #b08dff;
+  --color-text: #faf5ff;
+  --glass-blur: 20px;
+  --glass-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
+  --glass-border: 1px solid rgba(255, 0, 255, 0.2);
+
+  /* 🖋️ Text contrast colors */
+   --color-textprimary: #faf5ff;
+   --color-textsecondary: #e9d5ff;
+   --color-textaccent: #1a001f;
+  --color-textbg: #faf5ff;
+  --color-textsurface: #faf5ff;
+}
+
+/* 🌈 Aurora Theme — Updated Vibrant Gradient */
+.theme-aurora {
+  --color-primary: #f5d3f9;
+  --color-secondary: #b6b8be;
+  --color-accent: #5bc0be;
+  --color-bg: linear-gradient(135deg, #2a0845, #6441a5);
+  --color-surface: rgba(255, 255, 255, 0.12);
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-muted: #d4d4d8;
+  --color-text: #4a627a;
+  --glass-blur: 20px;
+  --glass-shadow: 0 0 40px rgba(91, 192, 190, 0.3);
+  --glass-border: 1px solid rgba(91, 192, 190, 0.25);
+
+  /* 🖋️ Text contrast colors - Updated */
+  --color-textprimary: #4994b2;
+  --color-textsecondary: #2fa4d2;
+  --color-textaccent: #5bc0be;
+  --color-textbg: #f8fafc;
+  --color-textsurface: #1c6136;
+}
+
+/* 🌙 Midnight Theme — Minimal Dark */
+.theme-midnight {
+  --color-primary: #0f172a;
+  --color-secondary: #1e293b;
+  --color-accent: #3b82f6;
+  --color-bg: #0a0a0a;
+  --color-surface: #111827;
   --color-border: rgba(255, 255, 255, 0.08);
-  --color-muted: #94a3b8;
-  --color-text: #f1f5f9;
+  --color-muted: #593384;
+  --color-text: #9a85b0;
+  --glass-blur: 16px;
+  --glass-shadow: none;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
 
-  /* ✨ Glassmorphism */
-  --glass-blur: 12px;
-  --glass-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+  /* 🖋️ Text contrast colors - Updated */
+  --color-textprimary: #160e51;
+  --color-textsecondary: #7964ab;
+  --color-textaccent: #3b82f6;
+  --color-textbg: #291367;
+  --color-textsurface: #613972;
 }
+
 
 
 /* 🔗 Map to Tailwind */
@@ -54,6 +132,27 @@
   --color-bg: var(--color-bg);
   --color-surface: var(--color-surface);
   --color-border: var(--color-border);
-  --color-muted: var(--color-muted);
-  --color-text: var(--color-text);
+  --color-muted: var(--color- ext);
+
+
+  --color-textprimary: var( --color-textprimary);
+  --color-textsecondary: var( --color-textsecondary);
+  --color-textaccent: var( --color-textaccent);
+  --color-textbg: var(--color-textbg);
+  --color-textsurface: var(--color-textsurface);
+
+
 }
+
+
+.custom-table .ant-table-thead > tr > th {
+  background-color: var(--color-bg) ; 
+  color: var(--color-textprimary);  
+            
+}
+
+.custom-table .ant-table-tbody > tr > td {
+  background-color: var(--color-bg); 
+  color:var(--color-textprimary) ;
+}
+

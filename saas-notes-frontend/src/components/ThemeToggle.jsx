@@ -27,6 +27,7 @@ export function ThemeToggle() {
         ${theme === "dark" ? "bg-gray-800" : "bg-yellow-300"}
         shadow-[inset_2px_2px_6px_rgba(0,0,0,0.2),inset_-2px_-2px_6px_rgba(255,255,255,0.3)]
       `}
+      title={theme}
     >
       {/* Circle toggle thumb */}
       <div
