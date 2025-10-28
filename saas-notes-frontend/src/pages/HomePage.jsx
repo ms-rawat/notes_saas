@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterTenant from './RegisterTenant'; // Assuming this is your component
+import RegisterTenant from './Auth/RegisterTenant'; // Assuming this is your component
 import {
   Notebook,
   Users,

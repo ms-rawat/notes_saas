@@ -5,6 +5,7 @@ const pool = require("../db");
 const auth = require("../middleware/auth");
 const router = express.Router();
 const crypto = require('crypto');
+const { sendEmail } = require("../utils/SendEmail");
 
 
 router.get('/', async (req,res)=>{
@@ -66,10 +67,10 @@ router.post("/signup", async (req, res) => {
 
     // Insert new user
     const insertResult = await pool.query(
-      `INSERT INTO users (name, email, password_hash, tenant_id, role) 
+      `INSERT INTO users (name, email, password_hash, tenant_id) 
        VALUES ($1, $2, $3, $4, $5) 
-       RETURNING id, name, email, tenant_id, role`,
-      [name, email, passwordHash, tenant_id, role || "USER"]
+       RETURNING id, name, email, tenant_id`,
+      [name, email, passwordHash, tenant_id]
     );
 
     const newUser = insertResult.rows[0];
@@ -93,6 +94,7 @@ router.post("/signup", async (req, res) => {
 
     res.status(201).json({ token });
   } catch (err) {
+    console.log(error)
     res.status(500).json({ error: err.message });
   }
 });
@@ -100,28 +102,27 @@ router.post("/signup", async (req, res) => {
 router.post("/forgot-password", async(req,res)=>{
   const {email} = req.body;
 try{
-  const userResult = await pool.query("SELECT id FROM users WHERE email = $1",[email]);
+  const userResult = await pool.query("SELECT * FROM users WHERE email = $1",[email]);
   
-  console.log(userResult)
   if(userResult.rows.length === 0)
   {
       return res.status(200).json({ message: "Reset link sent if the email exists" });
   }
-
   const user = userResult.rows[0];
+  console.log(user)
   const resetToken = crypto.randomBytes(32).toString("hex");
   const hashToken = crypto.createHash("sha256").update(resetToken).digest("hex");
   const tokenExpiry = new Date(Date.now() + 10 * 60 * 1000);
   
   await pool.query("Update users set reset_token = $1,  reset_token_expires = $2 where id = $3",[hashToken,tokenExpiry,user.id] )
   
-  const resetLink = "/rest-password?token=" + resetToken;
+  const resetLink = req.headers.origin+"/reset-password?token=" + resetToken;
   
   // Send email
-    await sendEmail({
+    await sendEmail   ({
       to: user.email,
       subject: "NotesVerse Password Reset",
-      text: `Hi ${user.name},\n\nClick the link below to reset your password:\n${resetLink}\n\nIf you didn’t request this, please ignore it.`,
+      text: `Hi ${user.user_name},\n\nClick the link below to reset your password:\n${resetLink}\n\nIf you didn’t request this, please ignore it.`,
     });
 
     res.status(200).json({ message: "Password reset link sent!" });
@@ -132,6 +133,50 @@ try{
     res.status(500).json({error:err.message})
   }
 
+})
+
+
+router.post("/reset-password", async (req, res) => {
+  const { token, password } = req.body;
+
+  try {
+    // 1️⃣ Validate input
+    if (!token || !password) {
+      return res.status(400).json({ message: "Invalid request." });
+    }
+
+    // 2️⃣ Hash the token (we stored hashed one in DB)
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    // 3️⃣ Find matching user whose token is still valid
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE reset_token = $1 AND reset_token_expires > NOW()",
+      [hashedToken]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(400).json({ message: "Invalid or expired token." });
+    }
+
+    const user = userResult.rows[0];
+
+    // 4️⃣ Hash new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 5️⃣ Update user password & clear reset token
+    await pool.query(
+      `UPDATE users 
+       SET password_hash = $1, reset_token = NULL, reset_token_expires = NULL 
+       WHERE id = $2`,
+      [hashedPassword, user.user_id]
+    );
+
+    // 6️⃣ Respond
+    res.status(200).json({ message: "Password reset successful." });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
 })
 
 module.exports = router;

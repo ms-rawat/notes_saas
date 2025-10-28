@@ -50,12 +50,13 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
     const newUser = await pool.query(
-      `INSERT INTO users (tenant_id, email, password_hash, role)
+      `INSERT INTO users (tenant_id, email, password_hash, role_id)
        VALUES ($1, $2, $3, $4)
-       RETURNING id, email, role`,
-      [tenantId, adminEmail, hashedPassword, "ADMIN"]
+       RETURNING id, email`,
+      [tenantId, adminEmail, hashedPassword, 1 ]
     );
 
+ 
     const user = newUser.rows[0];
 
     const token = jwt.sign(

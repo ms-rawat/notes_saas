@@ -31,7 +31,7 @@ const Sidebar = ({ items = [], collapsed, onToggle }) => {
 return (
   <aside
     className={`${collapsed ? "w-16" : "w-60"} 
-       min-h-screen flex flex-col transition-all  duration-300 border-r border-border`}
+       min-h-screen flex flex-col transition-all  duration-300  sidebar`}
   >
     {/* Toggle + Logo */}
     <div className={`flex items-center  px-3 r relative border-b border-border py-3 ${collapsed ? "justify-center" : "justify-start"}`}>

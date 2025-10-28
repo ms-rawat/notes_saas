@@ -1,18 +1,15 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router";
-import { UseApi } from "../Hooks/UseApi";
 import { useState, useEffect } from "react";
 import { Input, Button, Typography, Checkbox, Select } from "antd";
 import {
   MailOutlined,
   LockOutlined,
   ApartmentOutlined,
-  GoogleOutlined,
-  FacebookFilled,
 } from "@ant-design/icons";
-import { ThemeSwitcher } from "../components/ThemeSwithcher";
-import logo from "../assets/logo.png"
+
+import UseApi from "../../Hooks/UseApi";
 
 const { Title, Text } = Typography;
 
@@ -114,7 +111,6 @@ export default function Login() {
         </div>
       </div>
     </div>
-          <ThemeSwitcher /> 
 
   </div>
 
@@ -204,9 +200,9 @@ export default function Login() {
 
           <p className="text-center mt-6 text-gray-600 dark:text-gray-300 text-sm">
             Don’t have an account?{" "}
-            <a href="#" className="text-blue-600 hover:underline font-medium">
+            <Link to='/register' className="text-blue-600 hover:underline font-medium">
               Create an account
-            </a>
+            </Link>
           </p>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { Loader, Plus } from "lucide-react";
 import UseApi from "../Hooks/UseApi";
 import NoteFormModal from "./NoteFormModal";
 import ThreeDotMenu from "../components/ThreeDotMenu";
-import DeleteConfirmModal from "./DeleteConfirmModal";
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import { TableOutlined, AppstoreOutlined } from "@ant-design/icons";
 import CardTable from "../components/CardTable";
 
