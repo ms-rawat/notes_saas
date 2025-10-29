@@ -1,14 +1,22 @@
-import { Menu } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import { DynamicIcon } from 'lucide-react/dynamic';
 
-import { NavLink } from "react-router";
+import { NavLink, useNavigate, useNavigation } from "react-router";
 import UseApi from "../Hooks/UseApi";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeSwitcher } from "./ThemeSwithcher";
+import ProfileMenu from "./ProfileMenu";
+import { notification } from "antd";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/authSlice";
 
 const Sidebar = ({ items = [], collapsed, onToggle }) => {
   const [Menus, setMenus] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
   // getting the menus from backend
   const { data, isPending, error, refetch } = UseApi({
     url: "menu/",
@@ -27,6 +35,27 @@ const Sidebar = ({ items = [], collapsed, onToggle }) => {
       setMenus(data.data);
     }
   }, [data])
+  const {mutate : logoutMutation} = UseApi({url : 'auth/logout', method : 'POST', credentials : 'include'})
+    const handleLogout = async () => {
+      try {
+        Cookies.remove("token");
+        logoutMutation()
+        dispatch(logout());
+        
+        notification.success({
+          message: "You have been logged out successfully.",
+          placement: "bottomRight",
+        });
+     navigate('/login')   
+     console.log("logout clicked");
+      } catch (error) {
+        console.log(error)
+        notification.error({
+          message: "Logout failed.",
+          placement: "bottomRight",
+        });
+      } 
+    };
 
 return (
   <aside
@@ -87,6 +116,13 @@ return (
     </nav>
     {/* Theme Switcher */}
     <div className="mt-auto mb-2 px-2">
+        <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 hover:bg-accent/20"
+              >
+                <LogOut className="text-textprimary"  />
+               {!collapsed && <span className="truncate text-textsecondary">Logout</span>}
+              </button>
       <ThemeSwitcher />
     </div>
   </aside>

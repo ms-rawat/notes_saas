@@ -135,6 +135,16 @@ try{
 
 })
 
+// POST /auth/logout
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+});
+
 
 router.post("/reset-password", async (req, res) => {
   const { token, password } = req.body;

@@ -3,6 +3,7 @@ import { Card, Table, Tag, Progress } from "antd";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Bell, FileText, User, Edit } from "lucide-react";
 import UseApi from "../Hooks/UseApi";
+import ProfileMenu from "../components/ProfileMenu";
 
 const UserDashboard = () => {
   const pieData = [
@@ -58,7 +59,7 @@ const UserDashboard = () => {
           <h1 className="text-2xl font-semibold text-textsurface">Welcome back 👋 </h1>
           <p className="text-textsecondary">Here’s an overview of your notes.</p>
         </div>
-        <Bell className="text-accent cursor-pointer" size={22} />
+        <ProfileMenu/>
       </div>
 
       {/* Stats Cards */}
