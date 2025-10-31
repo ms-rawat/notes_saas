@@ -7,6 +7,8 @@ import ThreeDotMenu from "../components/ThreeDotMenu";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import { TableOutlined, AppstoreOutlined } from "@ant-design/icons";
 import CardTable from "../components/CardTable";
+import { useSelector } from "react-redux";
+import { selectUser } from "../store/authSlice";
 
 const NotesPage = () => {
     const [filters, setFilters] = useState({ search: "", category: "", dateRange: [] });
@@ -21,14 +23,16 @@ const NotesPage = () => {
         pageSize: 10,
     });
 
-    const { data: notesData, isPending: NotesLoading } = UseApi({
+    const user1 = useSelector(selectUser);
+    console.log(user1)
+    const { mutation: notesData, isPending: NotesLoading } = UseApi({
         url: "notes",
-        method: "GET",
-        params: {
+        method: "post",
+        body: {
+            owner_id : user1?.id,
             page: pagination.current,
             limit: pagination.pageSize,
         },
-        queryKey: ["notes", pagination.current, pagination.pageSize],
     });
 
     const handleTableChange = (newPagination) => {

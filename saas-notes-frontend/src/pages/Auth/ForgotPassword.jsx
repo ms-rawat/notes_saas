@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Mail, ArrowLeft } from "lucide-react";
-import { Form, Input, Button, message, Card } from "antd";
+import { Form, Input, Button, message, Card, notification } from "antd";
 import { useNavigate } from "react-router";
 import UseApi from "../../Hooks/UseApi";
 
@@ -20,10 +20,10 @@ const ForgotPassword = () => {
       const data = await response.json();
 
       if (response.ok) {
-        message.success("Password reset link sent to your email!");
+        notification.success({message:"Password reset link sent to your email!"});
         navigate("/login");
       } else {
-        message.error(data.message || "Something went wrong!");
+         notification.success({message:"Something went wrong"});
       }
     } catch (error) {
       message.error("Server error. Try again later.");

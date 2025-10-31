@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
-import { Input, Button, Typography, Checkbox, Select } from "antd";
+import { Input, Button, Typography, Checkbox, Select, message } from "antd";
 import {
   MailOutlined,
   LockOutlined,
@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 
 import UseApi from "../../Hooks/UseApi";
+import { useDispatch } from "react-redux";
 
 const { Title, Text } = Typography;
 
@@ -17,6 +18,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [OrgList, setOrgList] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -58,9 +60,11 @@ export default function Login() {
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      handleLogin(values, {
-        onSuccess: () => navigate("/dashboard"),
+    onSubmit:async (values) => {
+    handleLogin(values, {
+        onSuccess: (r) =>{
+          console.log(r)
+          navigate("/dashboard");},
       });
     },
   });

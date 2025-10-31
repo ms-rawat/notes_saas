@@ -189,4 +189,66 @@ router.post("/reset-password", async (req, res) => {
   }
 })
 
+// routes/auth.js
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const router = express.Router();
+
+// GET /api/me - Get current user from JWT cookie
+router.get('/me', async (req, res) => {
+  try {
+    const token = req.cookies.token; 
+    
+    if (!token) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Not authenticated' 
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    const user = await User.findById(decoded.userId).select('-password');
+    
+    if (!user) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'User not found' 
+      });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      }
+    });
+
+  } catch (error) {
+    console.error('Auth error:', error);
+    
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid token' 
+      });
+    }
+    
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Token expired' 
+      });
+    }
+
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error' 
+    });
+  }
+});
+
 module.exports = router;
+

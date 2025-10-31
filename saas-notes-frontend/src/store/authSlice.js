@@ -1,6 +1,7 @@
 // store/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiUrl } from "../StandardConst";
+
 // Check if user is authenticated (backend reads JWT from cookie)
 export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
   const res = await fetch(`${ApiUrl}/api/me`, {
@@ -16,9 +17,10 @@ const authSlice = createSlice({
     user: null,
     status: "idle", // "idle" | "loading" | "succeeded" | "failed"
   },
-  reducers: {
+  reducers: {     
     logout(state) {
       state.user = null;
+      state.status = "idle";
     },
   },
   extraReducers: (builder) => {
@@ -38,4 +40,10 @@ const authSlice = createSlice({
 });
 
 export const { logout } = authSlice.actions;
+
+// Fixed selectors (use camelCase)
+export const selectUser = (state) => state.auth.user;
+export const selectAuthStatus = (state) => state.auth.status;
+export const selectIsAuthenticated = (state) => !!state.auth.user;
+
 export default authSlice.reducer;
