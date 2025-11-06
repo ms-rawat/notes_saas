@@ -91,7 +91,7 @@ router.post("/", auth, async (req, res) => {
 
 
 
-router.get("/",auth, async (req, res) => {
+router.post("/fetch-notes",auth, async (req, res) => {
   try {
     const { owner_id, page = 1, limit = 10 } = req.query;
     const pageNum = parseInt(page, 10);
@@ -132,7 +132,7 @@ router.get("/",auth, async (req, res) => {
       data: dataResult.rows,
     });
   } catch (err) {
-    console.error("Pagination error:", err.message);
+    console.error("Pagination error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });

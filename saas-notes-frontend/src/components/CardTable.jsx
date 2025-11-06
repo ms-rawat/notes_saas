@@ -1,26 +1,12 @@
-import React from "react";
-import { Card, Spin, Empty, Pagination } from "antd";
+import { Empty, Spin, Pagination } from "antd";
+import { CalendarOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
 
-/**
- * 🧩 CardTable Component
- * A responsive grid-based alternative to Ant Design Table.
- *
- * Props:
- * - columns: [{ title, dataIndex, render }]
- * - dataSource: array of data
- * - loading: boolean
- * - pagination: { current, pageSize, total, showSizeChanger, showTotal }
- * - onChange: (pagination) => void
- * - rowKey: key for each item
- */
 const CardTable = ({
-  columns = [],
   dataSource = [],
   loading = false,
   pagination = {},
   onChange,
-  rowKey = "id",
-  gridCols = "sm:grid-cols-2 lg:grid-cols-3",
 }) => {
   if (loading)
     return (
@@ -36,45 +22,73 @@ const CardTable = ({
       </div>
     );
 
-  const renderCard = (record) => {
-    return (
-      <Card
-        key={record[rowKey]}
-        className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-sm hover:shadow-lg transition-all hover:scale-[1.01] cursor-pointer"
-        title={
-          <div className="font-semibold text-[var(--color-primary)]">
-            {columns.find((col) => col.isTitle)?.render
-              ? columns.find((col) => col.isTitle).render(record[columns.find((col) => col.isTitle).dataIndex], record)
-              : record[columns.find((col) => col.isTitle)?.dataIndex] || record.title}
-          </div>
-        }
+  const renderCard = (item) => (
+    <div
+      key={item.id}
+      className="
+        group relative overflow-hidden
+        bg-secondary 
+        border border-border
+        rounded-2xl 
+        p-5
+        shadow-[0_4px_20px_rgba(0,0,0,0.3)]
+        backdrop-blur-xl
+        transition-all duration-300
+        hover:scale-[1.03] hover:shadow-[0_8px_40px_rgba(0,0,0,0.4)]
+        hover:border-[var(--color-primary)]
+        cursor-pointer
+      "
+    >
+      {/* 🔹 Title */}
+      <h2
+        className="
+          text-lg font-semibold mb-2 
+          text-textaccent
+          tracking-wide leading-snug
+          group-hover:tracking-wider transition-all
+        "
       >
-        <div className="space-y-2">
-          {columns
-            .filter((col) => !col.isTitle)
-            .map((col) => (
-              <div key={col.dataIndex} className="flex justify-between items-center text-sm">
-                <span className="text-[var(--color-muted)]">{col.title}:</span>
-                <span className="text-[var(--color-text)] font-medium">
-                  {col.render ? col.render(record[col.dataIndex], record) : record[col.dataIndex]}
-                </span>
-              </div>
-            ))}
+        {item.title}
+      </h2>
+
+      {/* 🔹 Body */}
+      <p className="text-[var(--color-textaccent,#e5e7eb)] text-sm mb-4 leading-relaxed line-clamp-3">
+        {item.body}
+      </p>
+
+      {/* 🔹 Metadata Section */}
+      <div className="flex items-center justify-between text-xs text-[var(--color-muted,#9ca3af)]">
+        <div className="flex items-center gap-1">
+          <CalendarOutlined />
+          <span>{dayjs(item.created_at).format("DD MMM YYYY")}</span>
         </div>
-      </Card>
-    );
-  };
+        <div className="flex items-center gap-1">
+          <ClockCircleOutlined />
+          <span>{dayjs(item.updated_at).format("hh:mm A")}</span>
+        </div>
+      </div>
+
+      {/* 🔹 Futuristic Gradient Glow */}
+      <div
+        className="
+          absolute inset-0 rounded-2xl pointer-events-none 
+          opacity-0 group-hover:opacity-100 transition-opacity duration-500
+          blur-lg
+        "
+      ></div>
+    </div>
+  );
 
   return (
     <div className="p-4">
-      {/* Grid layout */}
-      <div className={`grid gap-5 grid-cols-1 ${gridCols}`}>
-        {dataSource.map((record) => renderCard(record))}
+      {/* 🔹 Responsive Grid Layout */}
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        {dataSource.map(renderCard)}
       </div>
 
-      {/* Pagination */}
+      {/* 🔹 Pagination */}
       {pagination?.total > pagination?.pageSize && (
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center mt-8">
           <Pagination
             current={pagination.current}
             pageSize={pagination.pageSize}

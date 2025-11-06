@@ -9,9 +9,16 @@ import Login from "./pages/Auth/Login";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import RegisterTenant from "./pages/Auth/RegisterTenant";
 import ResetPassword from "./pages/Auth/ResetPassword";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchUser } from "./store/authSlice";
 
 export default function App() {
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   const router = createBrowserRouter([
     {

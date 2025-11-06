@@ -10,13 +10,15 @@
 :root {
   /* 🌤 Default Theme — Soft Modern Glass */
 --color-primary: #f7f7f7;
-  --color-secondary: #ec4899;
-  --color-accent: #fbbf24;
+  --color-secondary: #ede8ea;
+  --color-accent: #aeb0b2;
   --color-bg: #fdf2f8;
   --color-surface: rgba(255, 242, 248, 0.85);
   --color-border: rgba(217, 70, 239, 0.15);
   --color-muted: #9ca3af;
   --color-text: #1f2937;
+  --color-hover: #e2e2e2;
+  
   --glass-blur: 20px;
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   --glass-border: 1px solid rgba(255, 255, 255, 0.4);
@@ -24,7 +26,7 @@
   /* 🖋️ Text contrast colors */
   --color-textprimary: #111827;
   --color-textsecondary: #374151;
-  --color-textaccent: #ffffff;
+  --color-textaccent: #27516f;
   --color-textbg: #f9fafb;
   --color-textsurface: #111827;
 }
@@ -39,6 +41,7 @@
   --color-border: rgba(255, 255, 255, 0.06);
   --color-muted: #cbd5e1;
   --color-text: #f8fafc;
+   --color-hover: #141a2d;
   --glass-blur: 18px;
   --glass-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
   --glass-border: 1px solid rgba(0, 255, 255, 0.15);
@@ -59,6 +62,7 @@
   --color-border: rgba(74, 222, 128, 0.15);
   --color-muted: #86efac;
   --color-text: #f0fdf4;
+  --color-hover: #152e1e;
   --glass-blur: 16px;
   --glass-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
   --glass-border: 1px solid rgba(74, 222, 128, 0.2);
@@ -88,6 +92,7 @@
   --color-border: rgba(255, 0, 255, 0.1);
   --color-muted: #b08dff;
   --color-text: #faf5ff;
+  --color-hover: #15001c;
   --glass-blur: 20px;
   --glass-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
   --glass-border: 1px solid rgba(255, 0, 255, 0.2);
@@ -95,7 +100,7 @@
   /* 🖋️ Text contrast colors */
    --color-textprimary: #faf5ff;
    --color-textsecondary: #e9d5ff;
-   --color-textaccent: #1a001f;
+   --color-textaccent: #095bf3;
   --color-textbg: #faf5ff;
   --color-textsurface: #faf5ff;
 }
@@ -110,6 +115,7 @@
   --color-border: rgba(0, 242, 254, 0.2);
   --color-muted: #a5b4c8;
   --color-text: #e2e8f0;
+  --color-hover: #081a28;
   --glass-blur: 20px;
   --glass-shadow: 0 0 40px rgba(0, 242, 254, 0.4);
   --glass-border: 1px solid rgba(0, 242, 254, 0.3);
@@ -132,6 +138,7 @@
   --color-border: rgba(59, 130, 246, 0.15);
   --color-muted: #64748b;
   --color-text: #e2e8f0;
+  --color-hover: #0d1424;
   --glass-blur: 16px;
   --glass-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
   --glass-border: 1px solid rgba(59, 130, 246, 0.2);
@@ -159,7 +166,8 @@
   --color-bg: var(--color-bg);
   --color-surface: var(--color-surface);
   --color-border: var(--color-border);
-  --color-muted: var(--color- ext);
+  --color-muted: var(--color-text);
+  --color-hover: var(--color-hover);
 
 
   --color-textprimary: var( --color-textprimary);
@@ -188,15 +196,82 @@
   box-shadow: var(--glass-shadow);
 }
 
-
+.glass-panel {
+  background: var(--color-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-right: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
 .custom-table .ant-table-thead > tr > th {
   background-color: var(--color-bg) ; 
   color: var(--color-textprimary);  
             
 }
 
-.custom-table .ant-table-tbody > tr > td {
+.custom-table  .ant-table-tbody > tr > td {
   background-color: var(--color-bg); 
   color:var(--color-textprimary) ;
 }
+.ant-pagination{
+  color : var(--color-textsurface)
+}
+.custom-table .ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: var(--color-hover); /* define this variable */
+  color: var(--color-textsecondary);
+}
 
+.custom-card {
+  position: relative;
+  background: rgba(20, 25, 40, 0.85); /* glassmorphic base */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.custom-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  border-color: var(--color-primary, #3b82f6);
+}
+
+/* 🎨 Title styling */
+.custom-card .ant-card-head {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.2),
+    rgba(147, 51, 234, 0.2)
+  );
+  color: var(--color-primary, #3b82f6);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ✨ Content styling */
+.custom-card .ant-card-body {
+  color: var(--color-text, #e5e7eb);
+  font-size: 14px;
+  padding: 20px;
+}
+
+/* Optional animated border glow */
+.custom-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, #3b82f6, #9333ea, #06b6d4);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.custom-card:hover::before {
+  opacity: 1;
+}

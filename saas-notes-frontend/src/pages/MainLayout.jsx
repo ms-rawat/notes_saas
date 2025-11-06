@@ -26,7 +26,7 @@ const MainLayout = () => {
     return (
 
         <div
-            className={`grid min-h-screen bg-bg   transition-all duration-300 
+            className={`grid min-h-screen bg-bg  transition-all duration-300 glass-panel
                 ${HideSidebar ? "grid-cols-[1fr]" : collapsed ? "grid-cols-[64px_1fr]" : "grid-cols-[240px_1fr]"}
             `}
         >          { !HideSidebar &&   <span className="h-screen sticky top-0 border-r">

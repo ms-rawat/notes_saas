@@ -1,14 +1,14 @@
 // store/authSlice.js
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ApiUrl } from "../StandardConst";
 
-// Check if user is authenticated (backend reads JWT from cookie)
+// 🔹 Async thunk to check if user is authenticated (using cookie)
 export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
-  const res = await fetch(`${ApiUrl}/api/me`, {
-    credentials: "include", // send cookies
+  const res = await fetch(`${ApiUrl}/auth/me`, {
+    credentials: "include", // send cookies to backend
   });
   if (!res.ok) throw new Error("Not authenticated");
-  return res.json();
+  return await res.json();
 });
 
 const authSlice = createSlice({
@@ -17,33 +17,38 @@ const authSlice = createSlice({
     user: null,
     status: "idle", // "idle" | "loading" | "succeeded" | "failed"
   },
-  reducers: {     
+  reducers: {
     logout(state) {
       state.user = null;
       state.status = "idle";
     },
+    loginSuccess(state, action) {
+      state.user = action.payload.userDetails;
+      state.status = "succeeded";
+    },
   },
+  // 🔹 Handle async fetchUser lifecycle
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
+        state.user = action.payload.userDetails || action.payload;
         state.status = "succeeded";
-        state.user = action.payload.user;
       })
       .addCase(fetchUser.rejected, (state) => {
-        state.status = "failed";
         state.user = null;
+        state.status = "failed";
       });
   },
 });
 
-export const { logout } = authSlice.actions;
-
-// Fixed selectors (use camelCase)
+// 🔹 Selectors
 export const selectUser = (state) => state.auth.user;
 export const selectAuthStatus = (state) => state.auth.status;
 export const selectIsAuthenticated = (state) => !!state.auth.user;
 
+// 🔹 Actions + Reducer
+export const { logout, loginSuccess } = authSlice.actions;
 export default authSlice.reducer;

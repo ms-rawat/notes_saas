@@ -25,14 +25,13 @@ router.post("/login", async (req, res) => {
 
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: "Invalid credentials" });
-
-    const token = jwt.sign(
-      {
+     const userDetails =    {
         userId: user.id,
         tenantId: user.tenant_id,
         role: user.role,
         email: user.email,
-      },
+      }
+    const token = jwt.sign( userDetails,
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -42,9 +41,8 @@ router.post("/login", async (req, res) => {
       secure : false,
       sameSite : "lax",
       maxAge : 24 * 60 * 60 * 1000
-
      })
-    res.json({ token });
+    res.json({ token,userDetails });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
@@ -189,10 +187,6 @@ router.post("/reset-password", async (req, res) => {
   }
 })
 
-// routes/auth.js
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const router = express.Router();
 
 // GET /api/me - Get current user from JWT cookie
 router.get('/me', async (req, res) => {
@@ -208,7 +202,9 @@ router.get('/me', async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    const user = await User.findById(decoded.userId).select('-password');
+    const {rows} = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
+    const user = rows[0];
+    console.log(user)
     
     if (!user) {
       return res.status(401).json({ 
@@ -220,9 +216,12 @@ router.get('/me', async (req, res) => {
     res.json({
       success: true,
       user: {
-        id: user._id,
-        name: user.name,
+        UserId: user.id,
+        name: user.user_name,
         email: user.email,
+        tenantId: user.tenant_id,
+        role: user.role_id
+
       }
     });
 

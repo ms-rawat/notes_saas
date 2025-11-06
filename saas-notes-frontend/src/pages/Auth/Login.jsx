@@ -11,6 +11,7 @@ import {
 
 import UseApi from "../../Hooks/UseApi";
 import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../store/authSlice";
 
 const { Title, Text } = Typography;
 
@@ -50,7 +51,7 @@ export default function Login() {
 
   const handleTenantSearch = (value) => {
     setKeyword(value);
-    if (value.trim().length > 1) fetchTenant();
+    if (value.trim().length >= 1) fetchTenant();
   };
 
   const formik = useFormik({
@@ -64,6 +65,7 @@ export default function Login() {
     handleLogin(values, {
         onSuccess: (r) =>{
           console.log(r)
+          dispatch(loginSuccess(r))
           navigate("/dashboard");},
       });
     },

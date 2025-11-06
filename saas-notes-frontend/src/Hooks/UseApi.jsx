@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 async function apiRequest({ url, method = "GET", body, headers = {}, params }) {
   const token = Cookies.get("token"); // read token from cookies
 
-  // Build query string for GET requests with params
   let fullUrl = `${ApiUrl}/${url}`;
   if (params && method === "GET") {
     const qs = new URLSearchParams(params).toString();

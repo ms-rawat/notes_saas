@@ -18,6 +18,7 @@ const NotesPage = () => {
         { name: "Work" },
         { name: "Archived" },
     ]);
+    const [notes, setNotes] = useState([]);
     const [pagination, setPagination] = useState({
         current: 1,
         pageSize: 10,
@@ -25,16 +26,25 @@ const NotesPage = () => {
 
     const user1 = useSelector(selectUser);
     console.log(user1)
-    const { mutation: notesData, isPending: NotesLoading } = UseApi({
-        url: "notes",
+    const { mutate: notesData, isPending: NotesLoading } = UseApi({
+        url: "notes/fetch-notes",
         method: "post",
-        body: {
-            owner_id : user1?.id,
-            page: pagination.current,
-            limit: pagination.pageSize,
-        },
     });
 
+    useEffect(() => {
+        notesData({
+            owner_id: user1?.id,
+            page: pagination.current,
+            limit: pagination.pageSize
+        }, {
+            onSuccess: (r) => {
+                console.log(r)
+                setNotes(r.data);
+                setLoading(false);
+            }
+        }
+        )
+    }, [pagination])
     const handleTableChange = (newPagination) => {
         setPagination({
             current: newPagination.current,
@@ -66,8 +76,8 @@ const NotesPage = () => {
             key: "action",
             render: (_, record) => (
                 <ThreeDotMenu
-                
-                
+
+
                     items={[
                         {
                             key: "edit",
@@ -123,21 +133,22 @@ const NotesPage = () => {
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <div className="self-baseline">
-                    <h1 className="text-2xl font-semibold text-gray-800">All Notes </h1>
-                    <p className="text-gray-500 text-sm">Manage and organize your notes easily.</p>
+                    <h1 className="text-2xl font-semibold text-textsecondary">All Notes </h1>
+                    <p className="text-textsurface text-sm">Manage and organize your notes easily.</p>
                 </div>
-                <div className="self-baseline">
-                    <Segmented
-                        options={[
-                            { label: "", value: "table", icon: <TableOutlined /> },
-                            { label: "", value: "card", icon: <AppstoreOutlined /> },
-                        ]}
-                        value={viewMode}
-                        onChange={(value) => setViewMode(value)}
-                        style={{ marginBottom: 16 }}
-                    />
-                </div>
-                <div className="self-baseline">
+
+                <div className="self-baseline flex flex-row justify-around gap-1">
+                    <div className="self-baseline">
+                        <Segmented
+                            options={[
+                                { label: "", value: "table", icon: <TableOutlined /> },
+                                { label: "", value: "card", icon: <AppstoreOutlined /> },
+                            ]}
+                            value={viewMode}
+                            onChange={(value) => setViewMode(value)}
+                            style={{ marginBottom: 16 }}
+                        />
+                    </div>
                     <Button type="primary" onClick={() => setVisible(true)} icon={<Plus size={16} />}>Create Note</Button>
 
                     <NoteFormModal
@@ -165,7 +176,7 @@ const NotesPage = () => {
                 (viewMode === "card" ?
                     <CardTable
                         columns={columns}
-                        dataSource={notesData?.data || []}
+                        dataSource={notes || []}
                         loading={NotesLoading}
                         pagination={{
                             current: pagination?.current,
@@ -180,7 +191,7 @@ const NotesPage = () => {
 
                     <Table
                         columns={columns}
-                        dataSource={notesData?.data || []}
+                        dataSource={notes || []}
                         loading={NotesLoading}
                         pagination={{
                             current: pagination?.current,
