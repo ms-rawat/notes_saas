@@ -3,14 +3,11 @@ import { ApiUrl } from "../StandardConst";
 import Cookies from "js-cookie";
 // Generic fetcher
 async function apiRequest({ url, method = "GET", body, headers = {}, params }) {
-  console.log("API Request:", { url, method, body, params });
   const token = Cookies.get("token"); // read token from cookies
 
-  // Build query string for GET requests with params
   let fullUrl = `${ApiUrl}/${url}`;
   if (params && method === "GET") {
     const qs = new URLSearchParams(params).toString();
-    console.log(qs);
     fullUrl += `?${qs}`;
   }
 
@@ -45,7 +42,6 @@ const result = await res.json();
  */
 export function UseApi({ url, method = "GET", body, params, queryKey, enabled = true }) {
   const queryClient = useQueryClient();
-  console.log("")
 
   if (method === "GET") {
 

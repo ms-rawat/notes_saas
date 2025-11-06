@@ -5,6 +5,7 @@ import {
   Zap,
   Sparkles,
   CloudMoon,
+  TreePalm,
 } from "lucide-react";
 
 const themes = [
@@ -13,6 +14,7 @@ const themes = [
   { name: "theme-cyber", label: "Cyber", icon: <Sparkles className="text-fuchsia-400" /> },
   { name: "theme-aurora", label: "Aurora", icon: <CloudMoon className="text-emerald-400" /> },
   { name: "theme-midnight", label: "Midnight", icon: <Moon className="text-indigo-400" /> },
+  {name : "theme-jungle", label: "Jungle", icon: <TreePalm className="text-green-400" />}
 ];
 
 export function ThemeSwitcher() {

@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { store } from './store/store.js'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 const queryClient = new QueryClient();
-
+import '@ant-design/v5-patch-for-react-19';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>

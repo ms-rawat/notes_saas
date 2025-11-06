@@ -1,18 +1,17 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router";
-import { UseApi } from "../Hooks/UseApi";
 import { useState, useEffect } from "react";
-import { Input, Button, Typography, Checkbox, Select } from "antd";
+import { Input, Button, Typography, Checkbox, Select, message } from "antd";
 import {
   MailOutlined,
   LockOutlined,
   ApartmentOutlined,
-  GoogleOutlined,
-  FacebookFilled,
 } from "@ant-design/icons";
-import { ThemeSwitcher } from "../components/ThemeSwithcher";
-import logo from "../assets/logo.png"
+
+import UseApi from "../../Hooks/UseApi";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../store/authSlice";
 
 const { Title, Text } = Typography;
 
@@ -20,6 +19,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [OrgList, setOrgList] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -51,7 +51,7 @@ export default function Login() {
 
   const handleTenantSearch = (value) => {
     setKeyword(value);
-    if (value.trim().length > 1) fetchTenant();
+    if (value.trim().length >= 1) fetchTenant();
   };
 
   const formik = useFormik({
@@ -61,9 +61,12 @@ export default function Login() {
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      handleLogin(values, {
-        onSuccess: () => navigate("/dashboard"),
+    onSubmit:async (values) => {
+    handleLogin(values, {
+        onSuccess: (r) =>{
+          console.log(r)
+          dispatch(loginSuccess(r))
+          navigate("/dashboard");},
       });
     },
   });
@@ -114,7 +117,6 @@ export default function Login() {
         </div>
       </div>
     </div>
-          <ThemeSwitcher /> 
 
   </div>
 
@@ -204,9 +206,9 @@ export default function Login() {
 
           <p className="text-center mt-6 text-gray-600 dark:text-gray-300 text-sm">
             Don’t have an account?{" "}
-            <a href="#" className="text-blue-600 hover:underline font-medium">
+            <Link to='/register' className="text-blue-600 hover:underline font-medium">
               Create an account
-            </a>
+            </Link>
           </p>
         </div>
       </div>

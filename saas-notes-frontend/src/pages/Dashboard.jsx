@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import NoteFormModal from './NoteFormModal';
 import UseApi from '../Hooks/UseApi';
-import { Button, message } from 'antd';
+import { Button
+  , notification } from 'antd';
 
 function Dashboard() {
   const [visible,setVisible] = useState(false);
@@ -11,10 +12,10 @@ function Dashboard() {
   function handleSubmit(values){
     hanldeCreate(values,{
       onSuccess : () => {
-        message.success("Note created");
+        notification.success({message:"Note created",});
       },
       onError : (err)=>{
-        message.error(err.message);
+        notification.error({message:err.message});
       }
     })
   }

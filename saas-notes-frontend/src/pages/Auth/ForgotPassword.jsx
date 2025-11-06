@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Mail, ArrowLeft } from "lucide-react";
-import { Form, Input, Button, message, Card } from "antd";
+import { Form, Input, Button, message, Card, notification } from "antd";
 import { useNavigate } from "react-router";
-import UseApi from "../Hooks/UseApi";
+import UseApi from "../../Hooks/UseApi";
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -14,16 +14,16 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       // 🔹 Replace with your API endpoint
-      const response = handleForgotPassword(values);
+      const response =await handleForgotPassword(values);
       console.log(response)
 
       const data = await response.json();
 
       if (response.ok) {
-        message.success("Password reset link sent to your email!");
+        notification.success({message:"Password reset link sent to your email!"});
         navigate("/login");
       } else {
-        message.error(data.message || "Something went wrong!");
+         notification.success({message:"Something went wrong"});
       }
     } catch (error) {
       message.error("Server error. Try again later.");
@@ -39,6 +39,7 @@ const ForgotPassword = () => {
         <div className="text-center space-y-3 text-white">
           <h1 className="text-4xl font-bold tracking-tight">NotesVerse</h1>
           <p className="text-sm opacity-80">Your thoughts. One place. Always secure.</p>
+          <p className="text-sm opacity-80">This feature is not ready yet. Stay tuned!</p>
         </div>
       </div>
 
@@ -65,7 +66,8 @@ const ForgotPassword = () => {
               <Input
                 prefix={<Mail className="w-4 h-4 mr-2 text-text/70" />}
                 placeholder="you@example.com"
-                className="rounded-lg py-2"
+                className="rounded-lg py-2 border-2 "
+                style={{borderWidth:"4px" , }}
               />
             </Form.Item>
 
