@@ -3,12 +3,12 @@ const cors = require("cors");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 
-const authRoutes = require("./routes/auth");
-const notesRoutes = require("./routes/notes");
-const tenantRoutes = require("./routes/tenants");
-const menuRoutes = require("./routes/menus");
-const notes = require("./routes/notes")
-const categories = require("./routes/categories")
+const authRoutes = require("../routes/auth");
+const notesRoutes = require("../routes/notes");
+const tenantRoutes = require("../routes/tenants");
+const menuRoutes = require("../routes/menus");
+const notes = require("../routes/notes")
+const categories = require("../routes/categories")
 
 const app = express();
 app.use(cors({
@@ -38,4 +38,4 @@ app.use('/categories',categories)
 
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+module.exports = app;
