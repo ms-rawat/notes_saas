@@ -15,7 +15,7 @@ const app = express();
 
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:5173","https://notes-saas-amber.vercel.app/"],
+  origin: ["http://localhost:5173","https://notesverse-delta.vercel.app/"],
   credentials: true,               
 }));
 
