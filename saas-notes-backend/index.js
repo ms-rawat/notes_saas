@@ -11,13 +11,15 @@ const notes = require("./routes/notes")
 const categories = require("./routes/categories")
 
 const app = express();
-
+app.use(cors({
+  origin: ["http://localhost:5173","https://notesverse-delta.vercel.app"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],         
+}));
 
 app.use(cookieParser());
-app.use(cors({
-  origin: ["http://localhost:5173","https://notesverse-delta.vercel.app/"],
-  credentials: true,               
-}));
+
 
 app.use(express.json());
 
