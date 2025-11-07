@@ -18,13 +18,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],         
 }));
 
-app.options(/.*/, cors({
-  origin: [
-    "http://localhost:5173",
-    "https://notesverse-delta.vercel.app",
-  ],
-  credentials: true,
-}));
 
 
 app.use(cookieParser());
