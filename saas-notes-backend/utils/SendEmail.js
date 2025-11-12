@@ -13,7 +13,7 @@ exports.sendEmail = async ({ to, subject, text }) => {
   });
 
   await transporter.sendMail({
-    from: `"NotesVerse Support" <${process.env.EMAIL_USER}>`,
+    from: `"NotesVerse Support" <${process.env.EMAIL_USERNAME }>`,
     to,
     subject,
     text,

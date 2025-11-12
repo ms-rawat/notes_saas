@@ -7,8 +7,8 @@ import {
 } from "@ant-design/icons";
 import { Avatar, Dropdown, notification } from "antd";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
-import { logout } from "../store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectUser } from "../store/authSlice";
 
 interface ProfileMenuProps {
   userName?: string;
@@ -24,6 +24,8 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+ const usersData = useSelector(selectUser)
+ console.log(usersData)
 
   // ✅ Logout handler
   const handleLogout = async () => {
@@ -140,8 +142,8 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
             <div className="flex items-center gap-3 p-3 rounded-xl">
               <Avatar size={44} src={avatarUrl} icon={<UserOutlined />} />
               <div className="flex flex-col text-textsecondary">
-                <span className="font-semibold text-base truncate">{userName}</span>
-                <span className="text-sm opacity-80 truncate">{userRole}</span>
+                <span className="font-semibold text-base truncate">{usersData?.name || "john doe"} </span>
+                <span className="text-sm opacity-80 truncate">{usersData?.roleName || "User"}</span>
               </div>
             </div>
           </GlassMorph>

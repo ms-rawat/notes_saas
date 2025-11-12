@@ -8,23 +8,26 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const {mutate : handleForgotPassword, isPending} = UseApi({url : 'auth/forgot-password', method : 'POST', credentials : 'include'})
+  const { mutate: handleForgotPassword, isPending } = UseApi({ url: 'auth/forgot-password', method: 'POST', credentials: 'include' })
 
   const onFinish = async (values) => {
     setLoading(true);
     try {
       // 🔹 Replace with your API endpoint
-      const response =await handleForgotPassword(values);
-      console.log(response)
+      handleForgotPassword(values, {
+        onSuccess: (data) => {
+          notification.success({
+            message: data?.message || "Password reset link sent to your email!"
+          });
+          navigate("/login");
+        },
+        onError: (error) => {
+          notification.error({
+            message: error.message || "Something went wrong. Try again later.",
+          });
+        },
+      });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        notification.success({message:"Password reset link sent to your email!"});
-        navigate("/login");
-      } else {
-         notification.success({message:"Something went wrong"});
-      }
     } catch (error) {
       message.error("Server error. Try again later.");
     } finally {
@@ -67,7 +70,7 @@ const ForgotPassword = () => {
                 prefix={<Mail className="w-4 h-4 mr-2 text-text/70" />}
                 placeholder="you@example.com"
                 className="rounded-lg py-2 border-2 "
-                style={{borderWidth:"4px" , }}
+                style={{ borderWidth: "4px", }}
               />
             </Form.Item>
 

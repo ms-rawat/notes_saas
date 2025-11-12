@@ -12,6 +12,8 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchUser } from "./store/authSlice";
+import TeamPage from "./pages/TeamPage";
+import RegisterInvitedUser from "./pages/Auth/RegisterInvitedUser";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -22,32 +24,37 @@ export default function App() {
 
   const router = createBrowserRouter([
     {
-       path: "/login",
-       element: <Login/>,
+      path: "/login",
+      element: <Login />,
     },
     {
       path: "/register",
-      element: <RegisterTenant/>
+      element: <RegisterTenant />
     },
     {
       path: "/forgot-password",
-      element: <ForgotPassword/>
+      element: <ForgotPassword />
     },
     {
       path: "/reset-password",
-      element : <ResetPassword/>
+      element: <ResetPassword />
     },
     {
-      path : "/",
-      element: <MainLayout/>,
-      children :[
-        {index : true , element:<HomePage/>},
-        {path:'dashboard', element :<UserDashboard/>},
-        {path : 'notes',element: <NotesPage/>}
+      path: "/register-user",
+      element: <RegisterInvitedUser />,
+    },
+    {
+      path: "/",
+      element: <MainLayout />,
+      children: [
+        { index: true, element: <HomePage /> },
+        { path: 'dashboard', element: <UserDashboard /> },
+        { path: 'notes', element: <NotesPage /> },
+        {path : 'team', element:<TeamPage/>}
       ]
     }
   ])
   return (
-   <RouterProvider router={router} />
+    <RouterProvider router={router} />
   )
 }
