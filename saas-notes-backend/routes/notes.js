@@ -23,7 +23,7 @@ router.get("/stats",auth, async (req, res) => {
 router.get("/recent", auth, async (req, res) => {
   try {
     const userId = req.user.userId;
-
+console.log(userId)
     const result = await pool.query(
       `SELECT n.id, n.title, n.created_at, c.name AS category_name
        FROM notes n join categories c on n.category_id = c.category_id

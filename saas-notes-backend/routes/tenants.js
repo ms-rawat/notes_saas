@@ -23,9 +23,9 @@ router.get('/SearchTenants', async (req,res)=>{
 });
 
 router.post("/register", async (req, res) => {
-  const { name, adminEmail, adminPassword } = req.body;
+  const { tenantname,username, adminEmail, adminPassword } = req.body;
 
-  if (!name  || !adminEmail || !adminPassword) {
+  if (!tenantname  || !adminEmail || !username || !adminPassword) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
 
     const newTenant = await pool.query(
       "INSERT INTO tenants (name, plan) VALUES ($1, $2) RETURNING id",
-      [name, "FREE"]
+      [tenantname,"FREE"]
     );
 
 
@@ -50,14 +50,18 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
     const newUser = await pool.query(
-      `INSERT INTO users (tenant_id, email, password_hash, role_id)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO users (tenant_id,user_name, email, password_hash, role_id)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING id, email`,
-      [tenantId, adminEmail, hashedPassword, 1 ]
+      [tenantId, username, adminEmail, hashedPassword, 1 ]
     );
 
  
     const user = newUser.rows[0];
+    user.tenantId = tenantId;
+    user.roleName = "Admin";
+    user.tenantName = tenantname;
+    
 
     const token = jwt.sign(
       { userId: user.id, tenantId, role: user.role, email: user.email },
@@ -72,7 +76,7 @@ router.post("/register", async (req, res) => {
     })
     res.status(201).json({
       message: "Tenant registered successfully",
-      tenant: { id: tenantId, name },
+      tenant: { id: tenantId, name: tenantname, plan: "FREE" },
       user
     });
   } catch (error) {

@@ -1,4 +1,4 @@
-import { LogOut, Menu } from "lucide-react";
+import { LogOut, Menu, User2 } from "lucide-react";
 import { DynamicIcon } from 'lucide-react/dynamic';
 
 import { NavLink, useNavigate, useNavigation } from "react-router";
@@ -70,6 +70,7 @@ return (
         className=" flex items-center justify-center hover:bg-accent/20 rounded-xl transition"
       >
         <Menu size={20} className="text-textprimary" />
+        
       </button>
 
       {/* Center Logo */}
@@ -89,30 +90,42 @@ return (
         </div>
       )}
 
-      {Menus?.map((item, idx) => (
-        <NavLink
-          key={idx}
-          to={item.path}
-          className={({ isActive }) =>
-            `flex items-center ${
-              collapsed ? "justify-center px-3 " : "justify-start px-3"
-            } gap-3 py-2 rounded-xl transition-all duration-200 ${
-              isActive
-                ? " font-semibold"
-                : "hover:bg-accent/20 "
-            }`
-          }
-        >
-          {item.icon && (
-            <DynamicIcon
-              name={item.icon}
-              size={18}
-              className="shrink-0 text-textprimary"
-            />
-          )}
-          {!collapsed && <span className="truncate text-textsecondary">{item.title}  </span>}
-        </NavLink>
-      ))}
+   {Menus?.map((item, idx) => (
+  <NavLink
+    key={idx}
+    to={item.path}
+    className={({ isActive }) =>
+      `flex items-center ${
+        collapsed ? "justify-center px-3" : "justify-start px-3"
+      } gap-3 py-2 rounded-xl transition-all duration-200 ${
+        isActive ? "font-semibold" : "hover:bg-hover"
+      }`
+    }
+  >
+    {({ isActive }) => (
+      <>
+        {item.icon && (
+          <DynamicIcon
+            name={item.icon}
+            size={18}
+            className="shrink-0 text-textprimary"
+            style={{ fill: isActive ? "var(--color-text)" : "none" }}
+          />
+        )}
+        {!collapsed && (
+          <span
+            className={`truncate ${
+              isActive ? "text-textprimary" : "text-textsecondary"
+            }`}
+          >
+            {item.title}
+          </span>
+        )}
+      </>
+    )}
+  </NavLink>
+))}
+
     </nav>
     {/* Theme Switcher */}
     <div className="mt-auto mb-2 px-2">

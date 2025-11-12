@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Lock, ShieldCheck } from "lucide-react";
-import { Form, Input, Button, message, Card } from "antd";
+import { Form, Input, Button, message, Card, notification } from "antd";
 import { useNavigate, useSearchParams } from "react-router";
 import UseApi from "../../Hooks/UseApi";
 
@@ -10,22 +10,29 @@ const ResetPassword = () => {
   const navigate = useNavigate();
 
   const token = searchParams.get("token"); // from email link
-  const {mutate: handleResetPassword, isPending} = UseApi({url:'auth/reset-password', method : 'POST', credentials : 'include'})
+  const { mutate: handleResetPassword, isPending } = UseApi({ url: 'auth/reset-password', method: 'POST', credentials: 'include' })
   const onFinish = async (values) => {
     if (!token) {
-      return message.error("Invalid or expired reset link.");
+      return notification.error({ message: "Passwords do not match." });
     }
     if (values.password !== values.confirmPassword) {
-      return message.error("Passwords do not match.");
+      return notification.error({ message: "Passwords do not match." });
     }
 
     setLoading(true);
     try {
-        console.log(values)
-    handleResetPassword({token, ...values})
-       
+      console.log(values)
+      handleResetPassword({ token, ...values },{
+        onSuccess: (data) => {
+          notification.success({ message: data?.message || "Password reset successful!" });
+          navigate("/login");
+        },
+        onError: (error) => {
+          throw error;
+        },
+      })
     } catch (error) {
-      message.error("Server error. Try again later.");
+      notification.error({ message: "Something went wrong. Try again later." });
     } finally {
       setLoading(false);
     }
@@ -89,7 +96,7 @@ const ResetPassword = () => {
               </Button>
             </Form.Item>
           </Form>
-        </Card> 
+        </Card>
       </div>
     </div>
   );

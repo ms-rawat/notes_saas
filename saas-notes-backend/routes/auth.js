@@ -13,22 +13,29 @@ router.get('/', async (req,res)=>{
 });
 // POST /auth/login
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, tenant } = req.body;
+  console.log(req.body)
   try {
     const result = await pool.query(
-      "SELECT u.* FROM users u JOIN tenants t ON u.tenant_id = t.id WHERE u.email = $1",
-      [email]
+      "SELECT u.*,t.name as tenant_name FROM users u JOIN tenants t ON u.tenant_id = t.id WHERE u.email = $1 and t.id = $2",
+      [email, tenant.id]
     );
 
     if (result.rows.length === 0) return res.status(401).json({ error: "Invalid credentials" });
     const user = result.rows[0];
-
+    const userRole = await pool.query(
+      "SELECT r.role_name FROM roles r WHERE r.role_id = $1",
+      [user.role_id]
+    );
+    user.roleName = userRole.rows[0]?.role_name || "User";
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: "Invalid credentials" });
      const userDetails =    {
         userId: user.id,
         tenantId: user.tenant_id,
         role: user.role,
+        roleName: user.roleName,
+        tenantName : user.tenant_name,
         email: user.email,
       }
     const token = jwt.sign( userDetails,
@@ -49,53 +56,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// POST /auth/signup
-router.post("/signup", async (req, res) => {
-  const { name, email, password, tenant_id, role } = req.body;
-
-  try {
-    // Check if user already exists
-    const existing = await pool.query("SELECT id FROM users WHERE email = $1", [email]);
-    if (existing.rows.length > 0) {
-      return res.status(400).json({ error: "User already exists" });
-    }
-
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    // Insert new user
-    const insertResult = await pool.query(
-      `INSERT INTO users (name, email, password_hash, tenant_id) 
-       VALUES ($1, $2, $3, $4, $5) 
-       RETURNING id, name, email, tenant_id`,
-      [name, email, passwordHash, tenant_id]
-    );
-
-    const newUser = insertResult.rows[0];
-
-    // Get tenant slug
-    const tenantRes = await pool.query("SELECT slug FROM tenants WHERE id = $1", [tenant_id]);
-    const tenantSlug = tenantRes.rows[0]?.slug;
-
-    // Create token
-    const token = jwt.sign(
-      {
-        userId: newUser.id,
-        tenantId: newUser.tenant_id,
-        tenantSlug,
-        role: newUser.role,
-        email: newUser.email,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    res.status(201).json({ token });
-  } catch (err) {
-    console.log(error)
-    res.status(500).json({ error: err.message });
-  }
-});
 
 router.post("/forgot-password", async(req,res)=>{
   const {email} = req.body;
@@ -201,10 +161,9 @@ router.get('/me', async (req, res) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+    console.log('token decoded',decoded)
     const {rows} = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
     const user = rows[0];
-    console.log(user)
     
     if (!user) {
       return res.status(401).json({ 
@@ -215,7 +174,7 @@ router.get('/me', async (req, res) => {
 
     res.json({
       success: true,
-      user: {
+      userDetails: {
         UserId: user.id,
         name: user.user_name,
         email: user.email,
@@ -247,6 +206,59 @@ router.get('/me', async (req, res) => {
       message: 'Server error' 
     });
   }
+});
+
+
+router.post("/invite-user", auth, async (req, res) => {
+  const { email, role_id } = req.body;
+  const tenantId = req.user.tenantId;
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
+
+  await pool.query(
+    `INSERT INTO user_invitations (tenant_id, email, role_id, token, expires_at)
+     VALUES ($1, $2, $3, $4, $5)`,
+    [tenantId, email, role_id, token, expiresAt]
+  );
+
+  const inviteLink = `${req.headers.origin}/register-user?token=${token}`;
+  await sendEmail({
+    to: email,
+    subject: "You’ve been invited to join NotesVerse",
+    text: `Click here to join your workspace: ${inviteLink}`
+  });
+
+  res.json({ success: true, message: "Invitation sent." });
+});
+
+router.get("/verify-invite", async (req, res) => {
+  const { token } = req.query;
+  const { rows } = await pool.query(
+    `SELECT * FROM user_invitations WHERE token=$1 AND expires_at > NOW() AND accepted=false`,
+    [token]
+  );
+  if (!rows.length) return res.status(400).json({ message: "Invalid or expired token." });
+  res.json({ success: true, email: rows[0].email, tenant_id: rows[0].tenant_id });
+});
+
+
+router.post("/register-invited-user", async (req, res) => {
+  const { token, password } = req.body;
+  const result = await pool.query(
+    `SELECT * FROM user_invitations WHERE token=$1 AND expires_at > NOW() AND accepted=false`,
+    [token]
+  );
+  if (!result.rows.length) return res.status(400).json({ message: "Invalid token" });
+
+  const invite = result.rows[0];
+  const hashed = await bcrypt.hash(password, 10);
+  await pool.query(
+    `INSERT INTO users (email, password_hash, tenant_id, role_id)
+     VALUES ($1, $2, $3, $4)`,
+    [invite.email, hashed, invite.tenant_id, invite.role_id]
+  );
+  await pool.query(`UPDATE user_invitations SET accepted=true WHERE id=$1`, [invite.id]);
+  res.json({ success: true, message: "User registered successfully." });
 });
 
 module.exports = router;

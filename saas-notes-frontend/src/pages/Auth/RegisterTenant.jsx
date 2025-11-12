@@ -9,7 +9,8 @@ export default function RegisterTenant() {
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Company name is required"),
+    username: Yup.string().required("Username is required"),
+    tenantname: Yup.string().required("Company name is required"),
     adminEmail: Yup.string().email("Invalid email").required("Admin email is required"),
     adminPassword: Yup.string()
       .min(6, "Password must be at least 6 characters")
@@ -26,12 +27,12 @@ export default function RegisterTenant() {
     registerMutation.mutate(values, {
       onSuccess: (data) => {
         localStorage.setItem("token", data.token);
-        notification.success({message: "Tenant Registered Successfully",placement: "bottomRight"})
+        notification.success({ message: "Tenant Registered Successfully", placement: "bottomRight" })
         navigate("/dashboard");
       },
       onError: (error) => {
         setErrors({ slug: error.message || "Company already exists" });
-                notification.error({message: error.message || "Something weng wrong!",placement: "bottomRight"})
+        notification.error({ message: error.message || "Something weng wrong!", placement: "bottomRight" })
 
       },
       onSettled: () => {
@@ -43,31 +44,53 @@ export default function RegisterTenant() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-primary">
       <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">
-          Register Tenant
-        </h2>
 
+        <span className="flex flex-col items-center">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 ">
+            Register Tenant
+          </h2>
+          <b>or</b>
+          <h4 className="text-center comfortaa-font">Ask your Organisation to send you an invitation to this plateform.</h4>
+        </span>
         <Formik
-          initialValues={{ name: "", slug: "", adminEmail: "", adminPassword: "" }}
+          initialValues={{ tenantname: "",username: "", adminEmail: "", adminPassword: "" }}
           validationSchema={validationSchema}
           onSubmit={handleRegister}
         >
           {({ isSubmitting }) => (
             <Form className="space-y-5">
-              {/* Company Name */}
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Company Name
+                  User Name
                 </label>
                 <Field
                   type="text"
-                  name="name"
+                  name="username"
                   className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 
                              bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 
                              shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2"
                 />
                 <ErrorMessage
-                  name="name"
+                  name="username"
+                  component="div"
+                  className="text-sm text-red-500 mt-1"
+                />
+              </div>
+              {/* Company Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Workspace Name
+                </label>
+                <Field
+                  type="text"
+                  name="tenantname"
+                  className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 
+                             bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 
+                             shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 p-2"
+                />
+                <ErrorMessage
+                  name="tenantname"
                   component="div"
                   className="text-sm text-red-500 mt-1"
                 />
@@ -123,7 +146,7 @@ export default function RegisterTenant() {
                 {registerMutation.isPending ? "Registering..." : "Register Tenant"}
               </button>
 
-           <p className="text-center mt-6 text-gray-600 dark:text-gray-300 text-sm">
+              <p className="text-center mt-6 text-gray-600 dark:text-gray-300 text-sm">
                 Already have an account?{" "}
                 <Link to='/login' className="text-blue-600 hover:underline font-medium">
                   login
