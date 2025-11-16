@@ -29,7 +29,7 @@ export default function Login() {
     tenant: Yup.object().nullable().required("Select an organisation"),
   });
 
-  const { mutate:   , isPending } = UseApi({
+  const { mutate: handleLogin  , isPending } = UseApi({
     url: "auth/login",
     method: "POST",
     credentials: "include",
