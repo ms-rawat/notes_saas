@@ -1,5 +1,4 @@
 import React from "react";
-import RegisterTenant from "./Auth/RegisterTenant";
 import {
   Notebook,
   Users,
@@ -13,6 +12,7 @@ import {
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 
+
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -23,7 +23,7 @@ const HomePage = () => {
         <nav className="container mx-auto flex justify-between items-center">
           <Link
             to="/"
-            className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 tracking-tight"
+            className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 tracking-tight LogoText"
           >
             NotesVerse
           </Link>
@@ -42,14 +42,14 @@ const HomePage = () => {
             <div className="space-x-3">
               <Link
                 to="/login"
-                className="hover:text-blue-400 transition-colors"
+                className="text-blue-400 font-semibold hover:underline transition-colors"
               >
                 Login
               </Link>
               <span className="opacity-40">|</span>
               <Link
                 to="/register"
-                className="text-blue-400 font-semibold hover:underline"
+                className="text-blue-400 font-semibold hover:underline transition-colors"
               >
                 Sign Up
               </Link>
@@ -144,10 +144,7 @@ const HomePage = () => {
           transition={{ duration: 1 }}
           className="hidden md:block relative"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/40 to-blue-500/30 blur-3xl rounded-full animate-pulse"></div>
-          <div className="relative w-full h-80 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl overflow-hidden">
-            <RegisterTenant />
-          </div>
+       
         </motion.div>
       </section>
 

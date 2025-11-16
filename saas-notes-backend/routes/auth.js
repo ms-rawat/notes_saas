@@ -18,7 +18,7 @@ router.post("/login", async (req, res) => {
   try {
     const result = await pool.query(
       "SELECT u.*,t.name as tenant_name FROM users u JOIN tenants t ON u.tenant_id = t.id WHERE u.email = $1 and t.id = $2",
-      [email, tenant.id]
+      [email, tenant.value]
     );
 
     if (result.rows.length === 0) return res.status(401).json({ error: "Invalid credentials" });

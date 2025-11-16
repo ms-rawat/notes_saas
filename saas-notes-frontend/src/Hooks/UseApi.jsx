@@ -54,13 +54,8 @@ export function UseApi({ url, method = "GET", body, params, queryKey, enabled = 
 
   return useMutation({
     mutationFn: (variables) =>
-      apiRequest({ url, method, body: variables || body }),
-    onSuccess: () => {
-      if (queryKey) {
-        queryClient.invalidateQueries({ queryKey });
-      }
-    },
-  }); 
+      apiRequest({ url, method, body: variables || body })
+  });
 }
 
 export default UseApi;
