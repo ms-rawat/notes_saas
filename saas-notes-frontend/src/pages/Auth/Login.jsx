@@ -12,6 +12,8 @@ import {
 import UseApi from "../../Hooks/UseApi";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../store/authSlice";
+import { Building2 } from "lucide-react";
+import CustomSelect from "../../components/Customselect";
 
 const { Title, Text } = Typography;
 
@@ -27,31 +29,39 @@ export default function Login() {
     tenant: Yup.object().nullable().required("Select an organisation"),
   });
 
-  const { mutate: handleLogin, isPending } = UseApi({
+  const { mutate:   , isPending } = UseApi({
     url: "auth/login",
     method: "POST",
     credentials: "include",
   });
 
-  const {
-    data: tenantData,
-    isPending: isTenantLoading,
-    refetch: fetchTenant,
-  } = UseApi({
+  const { mutate: fetchTenant, isPending: isTenantLoading, data: tenantData } = UseApi({
     url: "tenants/SearchTenants",
-    method: "GET",
-    queryKey: ["SearchKeyword", keyword],
-    params: { SearchKeyword: keyword },
-    enabled: false,
+    method: "POST",
   });
 
   useEffect(() => {
-    if (tenantData) setOrgList(tenantData);
+    if (tenantData?.data) {
+      // Adjust based on your API response structure
+      setOrgList(tenantData.data);
+    } else if (tenantData) {
+      setOrgList(tenantData);
+    } else {
+      // Clear list if there's no data, e.g., after a search that returns nothing
+      // or on initial load.
+      if (keyword.trim().length === 0) {
+        setOrgList([]);
+      }
+    }
   }, [tenantData]);
 
   const handleTenantSearch = (value) => {
     setKeyword(value);
-    if (value.trim().length >= 1) fetchTenant();
+    if (value.trim().length >= 1) {
+      fetchTenant({ SearchKeyword: value }); // This triggers the API call
+    } else {
+      setOrgList([]); // Clear list when input is empty
+    }
   };
 
   const formik = useFormik({
@@ -61,12 +71,13 @@ export default function Login() {
       password: "",
     },
     validationSchema,
-    onSubmit:async (values) => {
-    handleLogin(values, {
-        onSuccess: (r) =>{
+    onSubmit: async (values) => {
+      handleLogin(values, {
+        onSuccess: (r) => {
           console.log(r)
           dispatch(loginSuccess(r))
-          navigate("/dashboard");},
+          navigate("/dashboard");
+        },
       });
     },
   });
@@ -77,52 +88,52 @@ export default function Login() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* ---------- Left Panel (App Info / Illustration) ---------- */}
-<div className="hidden lg:flex flex-col justify-center items-center bg-gradient-to-br from-indigo-700 via-purple-800 to-blue-700 text-white p-12 relative overflow-hidden">
-  {/* Overlay Glow Effects */}
-  <div className="absolute -top-20 -left-20 w-64 h-64 bg-blue-500/40 rounded-full blur-3xl"></div>
-  <div className="absolute bottom-0 right-0 w-72 h-72 bg-purple-600/30 rounded-full blur-3xl"></div>
+      <div className="hidden lg:flex flex-col justify-center items-center bg-gradient-to-br from-indigo-700 via-purple-800 to-blue-700 text-white p-12 relative overflow-hidden">
+        {/* Overlay Glow Effects */}
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-blue-500/40 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-72 h-72 bg-purple-600/30 rounded-full blur-3xl"></div>
 
-  <div className="max-w-md space-y-8 z-10">
-    <h2 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">
-      Welcome to NotesVerse 🚀
-    </h2>
+        <div className="max-w-md space-y-8 z-10">
+          <h2 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">
+            Welcome to NotesVerse 🚀
+          </h2>
 
-    <p className="text-white/80 text-base">
-      Your all-in-one productivity hub — create, organize, and collaborate in a dark-neon universe built for focus and creativity.
-    </p>
+          <p className="text-white/80 text-base">
+            Your all-in-one productivity hub — create, organize, and collaborate in a dark-neon universe built for focus and creativity.
+          </p>
 
-    {/* 🌟 Features */}
-    <div>
-      <h3 className="text-lg font-semibold mb-3 text-cyan-300">✨ Core Features</h3>
-      <ul className="space-y-2 text-white/90 list-disc list-inside">
-        <li>🧠 Smart notes with tag-based organization</li>
-        <li>🌙 Custom themes — dark, neon, pastel & more</li>
-        <li>⚡ Fast & secure authentication</li>
-        <li>📁 Cloud sync for seamless access anywhere</li>
-        <li>👥 Multi-tenant workspace support</li>
-      </ul>
-    </div>
+          {/* 🌟 Features */}
+          <div>
+            <h3 className="text-lg font-semibold mb-3 text-cyan-300">✨ Core Features</h3>
+            <ul className="space-y-2 text-white/90 list-disc list-inside">
+              <li>🧠 Smart notes with tag-based organization</li>
+              <li>🌙 Custom themes — dark, neon, pastel & more</li>
+              <li>⚡ Fast & secure authentication</li>
+              <li>📁 Cloud sync for seamless access anywhere</li>
+              <li>👥 Multi-tenant workspace support</li>
+            </ul>
+          </div>
 
-    {/* 💬 Testimonials */}
-    <div>
-      <h3 className="text-lg font-semibold mb-3 text-purple-300">💬 What users say</h3>
-      <div className="space-y-4">
-        <div className="bg-white/10 p-3 rounded-xl backdrop-blur-md">
-          <p className="text-sm italic">“NotesVerse completely changed how I organize my work — it’s minimal yet powerful.”</p>
-          <p className="text-xs text-right mt-1 text-white/60">— Aanya, Product Designer</p>
+          {/* 💬 Testimonials */}
+          <div>
+            <h3 className="text-lg font-semibold mb-3 text-purple-300">💬 What users say</h3>
+            <div className="space-y-4">
+              <div className="bg-white/10 p-3 rounded-xl backdrop-blur-md">
+                <p className="text-sm italic">“NotesVerse completely changed how I organize my work — it’s minimal yet powerful.”</p>
+                <p className="text-xs text-right mt-1 text-white/60">— Aanya, Product Designer</p>
+              </div>
+              <div className="bg-white/10 p-3 rounded-xl backdrop-blur-md">
+                <p className="text-sm italic">“The dark-neon theme is 🔥! It makes writing feel futuristic.”</p>
+                <p className="text-xs text-right mt-1 text-white/60">— Rohan, Developer</p>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div className="bg-white/10 p-3 rounded-xl backdrop-blur-md">
-          <p className="text-sm italic">“The dark-neon theme is 🔥! It makes writing feel futuristic.”</p>
-          <p className="text-xs text-right mt-1 text-white/60">— Rohan, Developer</p>
-        </div>
+
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 opacity-10 bg-[url('/grid-pattern.svg')] bg-contain bg-center" />
       </div>
-    </div>
-
-  </div>
-
-  {/* Subtle Background Pattern */}
-  <div className="absolute inset-0 opacity-10 bg-[url('/grid-pattern.svg')] bg-contain bg-center" />
-</div>
 
 
       {/* ---------- Right Panel (Login Form) ---------- */}
@@ -138,30 +149,55 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="mb-4">
-            <Select
-              showSearch
-              allowClear
-              placeholder="Search Organisation"
-              suffixIcon={<ApartmentOutlined />}
-              value={values.tenant?.id}
-              onSearch={handleTenantSearch}
-              className="mb-2"
-              onChange={(value) => {
-                const selected = OrgList.find((org) => org.id === value);
-                setFieldValue("tenant", selected || null);
-              }}
-              filterOption={false}
-              loading={isTenantLoading}
-              style={{ width: "100%" }}
-              options={OrgList.map((org) => ({
-                label: org.name,
-                value: org.id,
-              }))}
-            />
-            {touched.tenant && errors.tenant && (
-              <Text type="danger" className="text-sm">{errors.tenant}</Text>
-            )}
-</div>
+              {/* <Select
+                showSearch
+                allowClear
+                placeholder="Search Organisation"
+                suffixIcon={<ApartmentOutlined />}
+                value={values.tenant?.id}
+                onSearch={handleTenantSearch}
+                className="mb-2"
+                onChange={(value) => {
+                  const selected = OrgList.find((org) => org.id === value);
+                  setFieldValue("tenant", selected || null);
+                }}
+                filterOption={false}
+                loading={isTenantLoading}
+                style={{ width: "100%" }}
+                options={OrgList.map((org) => ({
+                  label: org.name,
+                  value: org.id,
+                }))}
+                dropdownRender={(menu) => (
+                  <>
+                    {menu}
+                    {isTenantLoading && <div style={{ padding: 8, textAlign: "center" }}>Loading...</div>}
+                  </>
+                )}
+              /> */}
+
+              <CustomSelect
+                label="Organisation"
+                options={OrgList.map((org) => ({
+                  label: org.name,
+                  value: org.id,
+                }))}
+                value={values.tenant} // Pass full object, not ID
+                onChange={(option) => {
+                  setFieldValue("tenant", option); // Set the full option object
+                }}
+                onSearch={handleTenantSearch}
+                isLoading={isTenantLoading}
+                icon={Building2}
+                placeholder="Search Organisation"
+                allowClear={true}
+                freeSolo={false}
+              />
+
+              {touched.tenant && errors.tenant && (
+                <Text type="danger" className="text-sm">{errors.tenant}</Text>
+              )}
+            </div>
             <Input
               prefix={<MailOutlined />}
               name="email"

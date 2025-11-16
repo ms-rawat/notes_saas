@@ -6,8 +6,9 @@ const jwt = require("jsonwebtoken")
 const router = express.Router();
 
 
-router.get('/SearchTenants', async (req,res)=>{
-  const {SearchKeyword} = req.query;
+router.post('/SearchTenants', async (req,res)=>{  
+  console.log(req.body)
+  const {SearchKeyword} = req.body;
   try{
     const getTenants = await pool.query(
       "SELECT * FROM tenants WHERE name LIKE $1",
