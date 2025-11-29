@@ -2,8 +2,10 @@ import { useSearchParams, useNavigate } from "react-router";
 import { Form, Input, Button, Card, notification } from "antd";
 import { useEffect, useState } from "react";
 import UseApi from "../../Hooks/UseApi";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 const RegisterInvitedUser = () => {
+  usePageTitle("Register User");
   const [params] = useSearchParams();
   const token = params.get("token");
   const navigate = useNavigate();

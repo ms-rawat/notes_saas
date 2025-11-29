@@ -26,27 +26,26 @@ const CustomSelect = ({
   const inputRef = useRef(null);
 
   // Find the selected option based on value prop
-const getSelectedOption = () => {
-  if (!value) return null; 
+  const getSelectedOption = () => {
+    if (!value) return null;
 
-  if (typeof value === "object") {
-    return options.find(opt => opt.value === value.value) || value;
-  }
+    if (typeof value === "object") {
+      return options.find((opt) => opt.value === value.value) || value;
+    }
 
-  return options.find(opt => String(opt.value) === String(value));
-};
-
+    return options.find((opt) => String(opt.value) === String(value));
+  };
 
   const selectedOption = getSelectedOption();
 
   // Update input value when selection changes or options update
   useEffect(() => {
     if (selectedOption) {
-      setInputValue(selectedOption.label || '');
+      setInputValue(selectedOption.label || "");
     } else if (!freeSolo) {
-      setInputValue('');
+      setInputValue("");
     }
-  }, [selectedOption, freeSolo, options]);
+  }, [selectedOption, freeSolo]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -69,11 +68,11 @@ const getSelectedOption = () => {
     setInputValue(val);
     setOpen(true);
     setHighlightedIndex(0);
-    
+
     if (onSearch) {
       onSearch(val);
     }
-    
+
     // In freeSolo mode, update value immediately
     if (freeSolo && !val) {
       onChange(null);
@@ -83,8 +82,8 @@ const getSelectedOption = () => {
   // Filter options based on input
   const filteredOptions = inputValue
     ? options.filter((opt) =>
-        opt.label.toLowerCase().includes(inputValue.toLowerCase())
-      )
+      opt.label.toLowerCase().includes(inputValue.toLowerCase())
+    )
     : options;
 
   // Check if current input matches any option
@@ -121,7 +120,7 @@ const getSelectedOption = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (!open && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+    if (!open && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
       setOpen(true);
       return;
     }
@@ -131,15 +130,17 @@ const getSelectedOption = () => {
     const totalOptions = filteredOptions.length + (showCreateOption ? 1 : 0);
 
     switch (e.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
         setHighlightedIndex((prev) => (prev + 1) % totalOptions);
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
-        setHighlightedIndex((prev) => (prev - 1 + totalOptions) % totalOptions);
+        setHighlightedIndex(
+          (prev) => (prev - 1 + totalOptions) % totalOptions
+        );
         break;
-      case 'Enter':
+      case "Enter":
         e.preventDefault();
         if (totalOptions === 0) return;
         if (highlightedIndex < filteredOptions.length) {
@@ -148,7 +149,7 @@ const getSelectedOption = () => {
           handleCreateOption();
         }
         break;
-      case 'Escape':
+      case "Escape":
         setOpen(false);
         break;
       default:
@@ -166,14 +167,15 @@ const getSelectedOption = () => {
   return (
     <div
       ref={wrapperRef}
-      className={`relative w-full ${disabled ? "opacity-60 pointer-events-none" : ""} ${className}`}
+      className={`relative w-full ${disabled ? "opacity-60 pointer-events-none" : ""
+        } ${className}`}
     >
       {label && (
         <label className="block text-sm font-medium text-gray-700 mb-2">
           {label}
         </label>
       )}
-      
+
       {/* Input Field */}
       <div className="relative flex items-center">
         {Icon && (
@@ -181,7 +183,7 @@ const getSelectedOption = () => {
             <Icon size={18} className="text-gray-500" />
           </div>
         )}
-        
+
         <input
           ref={inputRef}
           type="text"
@@ -191,9 +193,8 @@ const getSelectedOption = () => {
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full border border-gray-300 bg-white rounded-xl ${
-            Icon ? "pl-10" : "pl-3"
-          } pr-20 py-2.5 shadow-sm hover:shadow transition outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-gray-900 placeholder-gray-400`}
+          className={`w-full border border-gray-300 bg-white rounded-xl ${Icon ? "pl-10" : "pl-3"
+            } pr-20 py-2.5 shadow-sm hover:shadow transition outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-gray-900 placeholder-gray-400`}
         />
 
         <div className="absolute right-3 flex items-center gap-2 z-10">
@@ -242,15 +243,13 @@ const getSelectedOption = () => {
                     key={option.value}
                     onClick={() => handleSelect(option)}
                     onMouseEnter={() => setHighlightedIndex(index)}
-                    className={`px-3 py-2 text-sm cursor-pointer transition ${
-                      highlightedIndex === index
+                    className={`px-3 py-2 text-sm cursor-pointer transition ${highlightedIndex === index
                         ? "bg-blue-100"
                         : "hover:bg-blue-50"
-                    } ${
-                      selectedOption?.value === option.value
+                      } ${selectedOption?.value === option.value
                         ? "font-medium text-blue-600"
                         : ""
-                    }`}
+                      }`}
                   >
                     {option.label}
                   </div>
@@ -267,14 +266,14 @@ const getSelectedOption = () => {
               {showCreateOption && (
                 <div
                   onClick={handleCreateOption}
-                  onMouseEnter={() => setHighlightedIndex(filteredOptions.length)}
-                  className={`px-3 py-2 text-sm cursor-pointer transition ${
-                    filteredOptions.length > 0 ? "border-t border-gray-100" : ""
-                  } flex items-center gap-2 ${
-                    highlightedIndex === filteredOptions.length
+                  onMouseEnter={() =>
+                    setHighlightedIndex(filteredOptions.length)
+                  }
+                  className={`px-3 py-2 text-sm cursor-pointer transition ${filteredOptions.length > 0 ? "border-t border-gray-100" : ""
+                    } flex items-center gap-2 ${highlightedIndex === filteredOptions.length
                       ? "bg-green-50"
                       : "hover:bg-green-50"
-                  }`}
+                    }`}
                 >
                   <Plus size={16} className="text-green-600" />
                   <span className="text-green-600 font-medium">

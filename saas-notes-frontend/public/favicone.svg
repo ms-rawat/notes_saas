@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="noteFavGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00c6ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0072ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="hubGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6a11cb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2575fc;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <g stroke="url(#hubGradient)" stroke-width="2" opacity="0.5" fill="none">
+    <line x1="32" y1="32" x2="32" y2="10" /> <line x1="32" y1="32" x2="12" y2="48" /> <line x1="32" y1="32" x2="52" y2="48" /> </g>
+
+  <circle cx="32" cy="32" r="8" fill="url(#hubGradient)" stroke="#ffffff" stroke-width="1.5"/>
+
+  <g fill="url(#noteFavGradient)" stroke="#ffffff" stroke-width="1.5">
+    <path d="M24,4 H40 A2,2 0 0 1 42,6 V20 A2,2 0 0 1 40,22 H24 A2,2 0 0 1 22,20 V6 A2,2 0 0 1 24,4 Z" />
+    <path d="M42,4 L42,10 L36,4 Z" fill="#ffffff" opacity="0.6" stroke="none"/>
+
+    <path d="M4,42 H20 A2,2 0 0 1 22,44 V58 A2,2 0 0 1 20,60 H4 A2,2 0 0 1 2,58 V44 A2,2 0 0 1 4,42 Z" />
+     <path d="M22,42 L22,48 L16,42 Z" fill="#ffffff" opacity="0.6" stroke="none"/>
+
+    <path d="M44,42 H60 A2,2 0 0 1 62,44 V58 A2,2 0 0 1 60,60 H44 A2,2 0 0 1 42,58 V44 A2,2 0 0 1 44,42 Z" />
+    <path d="M62,42 L62,48 L56,42 Z" fill="#ffffff" opacity="0.6" stroke="none"/>
+  </g>
+</svg>

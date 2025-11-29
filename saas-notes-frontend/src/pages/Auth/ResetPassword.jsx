@@ -3,8 +3,10 @@ import { Lock, ShieldCheck } from "lucide-react";
 import { Form, Input, Button, message, Card, notification } from "antd";
 import { useNavigate, useSearchParams } from "react-router";
 import UseApi from "../../Hooks/UseApi";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 const ResetPassword = () => {
+  usePageTitle("Reset Password");
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ const ResetPassword = () => {
     setLoading(true);
     try {
       console.log(values)
-      handleResetPassword({ token, ...values },{
+      handleResetPassword({ token, ...values }, {
         onSuccess: (data) => {
           notification.success({ message: data?.message || "Password reset successful!" });
           navigate("/login");

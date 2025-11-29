@@ -11,9 +11,11 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
+import usePageTitle from "../Hooks/usePageTitle";
 
 
 const HomePage = () => {
+  usePageTitle("Home");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
@@ -25,7 +27,7 @@ const HomePage = () => {
             to="/"
             className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 tracking-tight LogoText"
           >
-            NotesVerse
+            <img className="w-60 h-16" src="/logo.svg" alt="logo" />
           </Link>
 
           {/* Desktop Menu */}
@@ -68,9 +70,8 @@ const HomePage = () => {
 
       {/* === MOBILE MENU === */}
       <div
-        className={`md:hidden fixed inset-0 z-40 bg-slate-900/95 backdrop-blur-lg transform transition-transform duration-300 ${
-          isMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`md:hidden fixed inset-0 z-40 bg-slate-900/95 backdrop-blur-lg transform transition-transform duration-300 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="p-8 pt-24 flex flex-col space-y-6 text-2xl">
           {["Features", "Testimonials", "Contact"].map((item) => (
@@ -113,7 +114,7 @@ const HomePage = () => {
           transition={{ duration: 0.7 }}
         >
           <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
-            Organize Your Thoughts.  
+            Organize Your Thoughts.
             <br /> Empower Your Team.
           </h1>
           <p className="text-lg text-slate-300 mb-8 max-w-md">
@@ -144,7 +145,7 @@ const HomePage = () => {
           transition={{ duration: 1 }}
           className="hidden md:block relative"
         >
-       
+
         </motion.div>
       </section>
 
