@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="noteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="verseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6a11cb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2575fc;stop-opacity:1" />
+    </linearGradient>
+    <filter id="softGlow" height="300%" width="300%" x="-75%" y="-75%">
+      <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
+      <feGaussianBlur in="thicken" stdDeviation="3" result="blurred" />
+      <feFlood flood-color="rgb(100,180,255)" result="glowColor" />
+      <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+      <feMerge>
+        <feMergeNode in="softGlow_colored"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g transform="translate(30, 20)">
+    <circle cx="40" cy="40" r="15" fill="url(#verseGradient)" opacity="0.3" />
+    
+    <g filter="url(#softGlow)">
+      <path d="M20,20 L35,20 L35,35 L25,35 L20,30 Z" fill="url(#noteGradient)" opacity="0.8" transform="rotate(-15 27.5 27.5)"/>
+      <path d="M35,20 L35,25 L30,25 L35,20" fill="#fff" opacity="0.5"/> <path d="M45,45 L60,45 L60,60 L50,60 L45,55 Z" fill="url(#noteGradient)" opacity="0.8" transform="rotate(15 52.5 52.5)"/>
+      <path d="M60,45 L60,50 L55,50 L60,45" fill="#fff" opacity="0.5"/> <path d="M55,15 L70,15 L70,30 L60,30 L55,25 Z" fill="url(#noteGradient)" opacity="0.7" transform="rotate(30 62.5 22.5)"/>
+      
+      <path d="M10,50 L25,50 L25,65 L15,65 L10,60 Z" fill="url(#noteGradient)" opacity="0.7" transform="rotate(-30 17.5 57.5)"/>
+    </g>
+    
+    <path d="M27.5,27.5 Q40,40 52.5,52.5" stroke="url(#verseGradient)" stroke-width="1.5" opacity="0.4" fill="none"/>
+    <path d="M62.5,22.5 Q40,40 17.5,57.5" stroke="url(#verseGradient)" stroke-width="1.5" opacity="0.4" fill="none"/>
+  </g>
+
+  <g transform="translate(120, 70)">
+    <text font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="42" font-weight="bold">
+      <tspan fill="#2c3e50">Notes</tspan><tspan fill="url(#verseGradient)">verse</tspan>
+    </text>
+    <text x="2" y="25" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#7f8c8d" letter-spacing="0.5">
+      Multi-tenant Note Platform
+    </text>
+  </g>
+</svg>

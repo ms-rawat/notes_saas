@@ -4,8 +4,10 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Bell, FileText, User, Edit } from "lucide-react";
 import UseApi from "../Hooks/UseApi";
 import ProfileMenu from "../components/ProfileMenu";
+import usePageTitle from "../Hooks/usePageTitle";
 
 const UserDashboard = () => {
+  usePageTitle("User Dashboard");
   const pieData = [
     { name: "Personal Notes", value: 65 },
     { name: "Work Notes", value: 25 },
@@ -59,7 +61,7 @@ const UserDashboard = () => {
           <h1 className="text-2xl font-semibold text-textsurface">Welcome back 👋 </h1>
           <p className="text-textsecondary">Here’s an overview of your notes.</p>
         </div>
-        <ProfileMenu/>
+        <ProfileMenu />
       </div>
 
       {/* Stats Cards */}

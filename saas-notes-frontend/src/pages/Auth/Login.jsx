@@ -14,10 +14,12 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../store/authSlice";
 import { Building2 } from "lucide-react";
 import CustomSelect from "../../components/Customselect";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 const { Title, Text } = Typography;
 
 export default function Login() {
+  usePageTitle("Login");
   const navigate = useNavigate();
   const [OrgList, setOrgList] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -29,7 +31,7 @@ export default function Login() {
     tenant: Yup.object().nullable().required("Select an organisation"),
   });
 
-  const { mutate: handleLogin  , isPending } = UseApi({
+  const { mutate: handleLogin, isPending } = UseApi({
     url: "auth/login",
     method: "POST",
     credentials: "include",

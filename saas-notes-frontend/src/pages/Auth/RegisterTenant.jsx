@@ -4,8 +4,10 @@ import * as Yup from "yup";
 import Password from "antd/es/input/Password";
 import UseApi from "../../Hooks/UseApi";
 import { notification } from "antd";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 export default function RegisterTenant() {
+  usePageTitle("Register Tenant");
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
@@ -53,7 +55,7 @@ export default function RegisterTenant() {
           <h4 className="text-center comfortaa-font">Ask your Organisation to send you an invitation to this plateform.</h4>
         </span>
         <Formik
-          initialValues={{ tenantname: "",username: "", adminEmail: "", adminPassword: "" }}
+          initialValues={{ tenantname: "", username: "", adminEmail: "", adminPassword: "" }}
           validationSchema={validationSchema}
           onSubmit={handleRegister}
         >

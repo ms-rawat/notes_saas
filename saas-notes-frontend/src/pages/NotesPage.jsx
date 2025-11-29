@@ -9,8 +9,10 @@ import { TableOutlined, AppstoreOutlined } from "@ant-design/icons";
 import CardTable from "../components/CardTable";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/authSlice";
+import usePageTitle from "../Hooks/usePageTitle";
 
 const NotesPage = () => {
+    usePageTitle("Notes");
     const [filters, setFilters] = useState({ search: "", category: "", dateRange: [] });
     const [loading, setLoading] = useState(false);
     const [categories] = useState([
