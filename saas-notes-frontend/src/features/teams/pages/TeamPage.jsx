@@ -1,8 +1,8 @@
 import { Button, Table, Tag } from "antd";
 import { useState } from "react";
-import UseApi from "../Hooks/UseApi";
-import InviteUserModal from "../components/team/InviteUserModal";
-import usePageTitle from "../Hooks/usePageTitle";
+import UseApi from "../../../Hooks/UseApi";
+import InviteUserModal from "../../../components/team/InviteUserModal";
+import usePageTitle from "../../../Hooks/usePageTitle";
 
 const TeamPage = () => {
   usePageTitle("Team");

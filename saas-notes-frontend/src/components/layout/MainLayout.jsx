@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router"
 import { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./Sidebar";
 
 const MainLayout = () => {
 
@@ -9,14 +9,14 @@ const MainLayout = () => {
     const location = useLocation();
 
     useEffect(() => {
-        console.log(location.pathname==='/')
+        console.log(location.pathname === '/')
         if (location.pathname === '/') {
             setHideSidebar(true)
-        }else{
+        } else {
             setHideSidebar(false)
         }
     }, [])
-     
+
     // toggle handler
     const handleToggle = () => {
         setCollapsed((prev) => !prev);
@@ -29,10 +29,10 @@ const MainLayout = () => {
             className={`grid min-h-screen bg-bg  transition-all duration-300 glass-panel
                 ${HideSidebar ? "grid-cols-[1fr]" : collapsed ? "grid-cols-[64px_1fr]" : "grid-cols-[240px_1fr]"}
             `}
-        >          { !HideSidebar &&   <span className="h-screen sticky top-0 border-r">
-                <Sidebar onToggle={handleToggle} collapsed={collapsed} />
+        >          {!HideSidebar && <span className="h-screen sticky top-0 border-r">
+            <Sidebar onToggle={handleToggle} collapsed={collapsed} />
 
-            </span>}
+        </span>}
             <main className="overflow-y-auto">
                 <Outlet />
             </main>

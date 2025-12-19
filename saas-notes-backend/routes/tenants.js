@@ -6,27 +6,41 @@ const jwt = require("jsonwebtoken")
 const router = express.Router();
 
 
-router.post('/SearchTenants', async (req,res)=>{  
+router.post('/SearchTenants', async (req, res) => {
   console.log(req.body)
-  const {SearchKeyword} = req.body;
-  try{
+  const { SearchKeyword } = req.body;
+  try {
     const getTenants = await pool.query(
       "SELECT * FROM tenants WHERE name LIKE $1",
       [`%${SearchKeyword}%`]
     );
-     res.status(200).json(getTenants.rows);
-  }catch(err){
+    res.status(200).json(getTenants.rows);
+  } catch (err) {
     console.error(err);
-      return res.status(500).json({error: err.message})
-    
+    return res.status(500).json({ error: err.message })
+
   }
 
 });
 
-router.post("/register", async (req, res) => {
-  const { tenantname,username, adminEmail, adminPassword } = req.body;
+router.get('/users', auth, async (req, res) => {
+  try {
+    const { tenantId } = req.user;
+    const users = await pool.query(
+      "SELECT id, user_name, email FROM users WHERE tenant_id = $1",
+      [tenantId]
+    );
+    res.json(users.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
-  if (!tenantname  || !adminEmail || !username || !adminPassword) {
+router.post("/register", async (req, res) => {
+  const { tenantname, username, adminEmail, adminPassword } = req.body;
+
+  if (!tenantname || !adminEmail || !username || !adminPassword) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -42,7 +56,7 @@ router.post("/register", async (req, res) => {
 
     const newTenant = await pool.query(
       "INSERT INTO tenants (name, plan) VALUES ($1, $2) RETURNING id",
-      [tenantname,"FREE"]
+      [tenantname, "FREE"]
     );
 
 
@@ -54,26 +68,26 @@ router.post("/register", async (req, res) => {
       `INSERT INTO users (tenant_id,user_name, email, password_hash, role_id)
        VALUES ($1, $2, $3, $4, $5)
        RETURNING id, email`,
-      [tenantId, username, adminEmail, hashedPassword, 1 ]
+      [tenantId, username, adminEmail, hashedPassword, 1]
     );
 
- 
+
     const user = newUser.rows[0];
     user.tenantId = tenantId;
     user.roleName = "Admin";
     user.tenantName = tenantname;
-    
+
 
     const token = jwt.sign(
       { userId: user.id, tenantId, role: user.role, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    res.cookie("token", token ,{
-      httpOnly : true,
-      secure : true,
-      sameSite : "strict",
-      maxAge : 24 * 60 * 60 * 1000
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000
     })
     res.status(201).json({
       message: "Tenant registered successfully",

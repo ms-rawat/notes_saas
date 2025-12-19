@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Lock, ShieldCheck } from "lucide-react";
 import { Form, Input, Button, message, Card, notification } from "antd";
 import { useNavigate, useSearchParams } from "react-router";
-import UseApi from "../../Hooks/UseApi";
-import usePageTitle from "../../Hooks/usePageTitle";
+import UseApi from "../../../Hooks/UseApi";
+import usePageTitle from "../../../Hooks/usePageTitle";
 
 const ResetPassword = () => {
   usePageTitle("Reset Password");

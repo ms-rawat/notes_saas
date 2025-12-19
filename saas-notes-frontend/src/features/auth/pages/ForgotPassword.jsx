@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Mail, ArrowLeft } from "lucide-react";
 import { Form, Input, Button, message, Card, notification } from "antd";
 import { useNavigate } from "react-router";
-import UseApi from "../../Hooks/UseApi";
-import usePageTitle from "../../Hooks/usePageTitle";
+import UseApi from "../../../Hooks/UseApi";
+import usePageTitle from "../../../Hooks/usePageTitle";
 
 const ForgotPassword = () => {
   usePageTitle("Forgot Password");

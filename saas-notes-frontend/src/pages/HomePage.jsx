@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  Notebook,
-  Users,
-  Lock,
+  Bug,
+  Layout,
+  CheckCircle,
   Zap,
   Star,
   Menu,
   X,
   ArrowRight,
+  GitPullRequest
 } from "lucide-react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
@@ -16,7 +17,7 @@ import usePageTitle from "../Hooks/usePageTitle";
 
 const HomePage = () => {
   usePageTitle("Home");
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-purple-950 text-white font-sans overflow-hidden">
@@ -25,9 +26,10 @@ const HomePage = () => {
         <nav className="container mx-auto flex justify-between items-center">
           <Link
             to="/"
-            className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 tracking-tight LogoText"
+            className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 tracking-tight flex items-center gap-2"
           >
-            <img className="w-60 h-16" src="/logo.svg" alt="logo" />
+            <Bug className="text-blue-400" />
+            <span>BugTracker</span>
           </Link>
 
           {/* Desktop Menu */}
@@ -114,12 +116,11 @@ const HomePage = () => {
           transition={{ duration: 0.7 }}
         >
           <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
-            Organize Your Thoughts.
-            <br /> Empower Your Team.
+            Ship Faster.
+            <br /> Squash Bugs.
           </h1>
           <p className="text-lg text-slate-300 mb-8 max-w-md">
-            A collaborative SaaS platform for secure note-taking, tenant-based
-            workspaces, and futuristic UI themes — built for productivity.
+            The modern issue tracking platform for agile teams. Manage projects, track bugs, and collaborate in real-time.
           </p>
 
           <div className="flex gap-4">
@@ -138,14 +139,32 @@ const HomePage = () => {
           </div>
         </motion.div>
 
-        {/* Hero Animation */}
+        {/* Hero Animation Placeholder */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
-          className="hidden md:block relative"
+          className="hidden md:flex justify-center items-center"
         >
-
+          <div className="relative w-full max-w-md aspect-square bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-3xl absolute" />
+          <div className="relative z-10 p-6 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl w-full">
+            <div className="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+              <span className="text-sm font-mono text-blue-400">PROJ-102</span>
+              <span className="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs">High Priority</span>
+            </div>
+            <h3 className="font-semibold text-lg mb-2">Fix production login crash</h3>
+            <div className="flex gap-2 mb-4">
+              <span className="px-2 py-1 rounded bg-slate-800 text-xs text-slate-400">Bug</span>
+              <span className="px-2 py-1 rounded bg-slate-800 text-xs text-slate-400">Backend</span>
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <div className="flex -space-x-2">
+                <div className="w-8 h-8 rounded-full bg-blue-500 border-2 border-slate-900"></div>
+                <div className="w-8 h-8 rounded-full bg-purple-500 border-2 border-slate-900"></div>
+              </div>
+              <span className="px-3 py-1 bg-blue-600 text-xs rounded-full">In Progress</span>
+            </div>
+          </div>
         </motion.div>
       </section>
 
@@ -155,33 +174,33 @@ const HomePage = () => {
         className="container mx-auto py-24 px-6 text-center"
       >
         <h2 className="text-4xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-          Power-Packed Features
+          Built for Developers
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {[
             {
-              icon: Notebook,
-              title: "Smart Note-Taking",
-              text: "Capture, edit, and organize ideas effortlessly with rich-text and category tagging.",
+              icon: Layout,
+              title: "Kanban Boards",
+              text: "Visualize your workflow with interactive drag-and-drop boards.",
               color: "text-blue-400",
             },
             {
-              icon: Users,
-              title: "Team Collaboration",
-              text: "Work together securely with multi-tenant access control and shared dashboards.",
-              color: "text-purple-400",
+              icon: Bug,
+              title: "Issue Tracking",
+              text: "Create, assign, and track bugs and tasks with ease.",
+              color: "text-red-400",
             },
             {
-              icon: Lock,
-              title: "Enterprise Security",
-              text: "End-to-end encrypted storage and role-based access ensure data safety.",
-              color: "text-cyan-400",
+              icon: CheckCircle,
+              title: "Project Mgmt",
+              text: "Organize work into projects with dedicated keys and managers.",
+              color: "text-green-400",
             },
             {
               icon: Zap,
-              title: "Lightning Fast",
-              text: "Optimized with React Query and PostgreSQL for smooth, near-instant responses.",
+              title: "Real-time Updates",
+              text: "Stay in sync with instant status updates and comments.",
               color: "text-yellow-400",
             },
           ].map(({ icon: Icon, title, text, color }, idx) => (
@@ -204,20 +223,22 @@ const HomePage = () => {
         className="container mx-auto py-24 px-6 text-center"
       >
         <h2 className="text-4xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-          What Our Users Say
+          Loved by Engineering Teams
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {[
             {
-              name: "Alex M.",
+              name: "Sarah J.",
+              role: "Product Manager",
               quote:
-                "“NotesVerse transformed our workflow — collaboration feels effortless and secure.”",
+                "“BugTracker is simple yet powerful. It helped us streamline our sprint planning significantly.”",
             },
             {
-              name: "Samantha L.",
+              name: "David K.",
+              role: "Lead Developer",
               quote:
-                "“The neon-dark theme is stunning. I actually *enjoy* organizing my notes now.”",
+                "“Finally, an issue tracker that doesn't feel bloated. The UI is fast and intuitive.”",
             },
           ].map((t, i) => (
             <motion.div
@@ -231,7 +252,10 @@ const HomePage = () => {
                 ))}
               </div>
               <p className="italic text-slate-300 mb-4">{t.quote}</p>
-              <p className="font-semibold">{t.name}</p>
+              <div>
+                <p className="font-semibold">{t.name}</p>
+                <p className="text-sm text-slate-400">{t.role}</p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -245,24 +269,23 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-800/30 blur-3xl"></div>
         <div className="relative bg-white/10 p-12 rounded-2xl backdrop-blur-md border border-white/20 shadow-2xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-            Ready to Get Started?
+            Start shipping better software today.
           </h2>
           <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of creators and teams boosting productivity with
-            NotesVerse.
+            Join efficient teams who trust BugTracker to deliver quality code.
           </p>
           <Link
             to="/register"
             className="inline-block px-8 py-4 font-bold rounded-full text-lg shadow-lg transform transition-transform bg-gradient-to-r from-blue-500 to-purple-500 hover:scale-105 hover:shadow-xl"
           >
-            Start Your Free Trial
+            Start For Free
           </Link>
         </div>
       </section>
 
       {/* === FOOTER === */}
       <footer className="py-8 px-6 text-center text-slate-400 border-t border-white/10">
-        <p>© {new Date().getFullYear()} NotesVerse. All Rights Reserved.</p>
+        <p>© {new Date().getFullYear()} BugTracker. All Rights Reserved.</p>
       </footer>
     </div>
   );

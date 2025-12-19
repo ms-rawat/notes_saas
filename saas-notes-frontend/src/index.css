@@ -275,3 +275,79 @@
 .custom-card:hover::before {
   opacity: 1;
 }
+
+/* 🎭 Global Modal Theming */
+.ant-modal-content {
+  background-color: var(--color-surface) !important;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow) !important;
+  color: var(--color-textprimary);
+}
+
+.ant-modal-header {
+  background-color: transparent !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  margin-bottom: 20px !important;
+}
+
+.ant-modal-title {
+  color: var(--color-textprimary) !important;
+  font-weight: 600;
+}
+
+.ant-modal-close {
+  color: var(--color-muted) !important;
+}
+
+.ant-modal-close:hover {
+  color: var(--color-accent) !important;
+  background-color: var(--color-hover) !important;
+}
+
+/* Form Elements inside Modal */
+.ant-modal .ant-form-item-label > label {
+  color: var(--color-textsecondary) !important;
+}
+
+.ant-modal .ant-input,
+.ant-modal .ant-input-textarea {
+  background-color: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-textprimary) !important;
+}
+
+.ant-modal .ant-input::placeholder,
+.ant-modal .ant-input-textarea::placeholder {
+  color: var(--color-muted) !important;
+}
+
+.ant-modal .ant-select-selector {
+  background-color: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-textprimary) !important;
+}
+
+.ant-modal .ant-select-arrow {
+  color: var(--color-muted) !important;
+}
+
+.ant-select-dropdown {
+  background-color: var(--color-surface) !important;
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow) !important;
+}
+
+.ant-select-item {
+  color: var(--color-textsecondary) !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: var(--color-accent) !important;
+  color: var(--color-bg) !important;
+}
+
+.ant-select-item-option-active {
+  background-color: var(--color-hover) !important;
+}

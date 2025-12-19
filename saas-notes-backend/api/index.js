@@ -4,18 +4,17 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 
 const authRoutes = require("../routes/auth");
-const notesRoutes = require("../routes/notes");
+const issuesRoutes = require("../routes/issues");
 const tenantRoutes = require("../routes/tenants");
 const menuRoutes = require("../routes/menus");
-const notes = require("../routes/notes")
-const categories = require("../routes/categories")
+const projectsRoutes = require("../routes/projects");
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:5173","https://notesverse-delta.vercel.app"],
+  origin: ["http://localhost:5173", "https://notesverse-delta.vercel.app"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],         
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 
@@ -30,11 +29,10 @@ app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // Routes
 app.use("/auth", authRoutes);
-app.use("/notes", notesRoutes);
-app.use('/tenants',tenantRoutes );
-app.use('/menu',menuRoutes);
-app.use('/notes',notes)
-app.use('/categories',categories)
+app.use("/issues", issuesRoutes);
+app.use('/tenants', tenantRoutes);
+app.use('/menu', menuRoutes);
+app.use('/projects', projectsRoutes);
 
 
 const port = process.env.PORT || 4000;

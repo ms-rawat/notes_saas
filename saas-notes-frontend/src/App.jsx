@@ -1,19 +1,19 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { ThemeToggle } from "./components/ThemeToggle";
+import { ThemeToggle } from "./components/ui/ThemeToggle";
 import HomePage from "./pages/HomePage";
-import Dashboard from "./pages/Dashboard";
-import MainLayout from "./pages/MainLayout";
-import UserDashboard from "./pages/UserDashboard";
-import NotesPage from "./pages/NotesPage";
-import Login from "./pages/Auth/Login";
-import ForgotPassword from "./pages/Auth/ForgotPassword";
-import RegisterTenant from "./pages/Auth/RegisterTenant";
-import ResetPassword from "./pages/Auth/ResetPassword";
+import MainLayout from "./components/layout/MainLayout";
+
+import BoardPage from "./features/issues/pages/BoardPage";
+import ProjectsPage from "./features/projects/pages/ProjectsPage";
+import Login from "./features/auth/pages/Login";
+import ForgotPassword from "./features/auth/pages/ForgotPassword";
+import RegisterTenant from "./features/auth/pages/RegisterTenant";
+import ResetPassword from "./features/auth/pages/ResetPassword";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchUser } from "./store/authSlice";
-import TeamPage from "./pages/TeamPage";
-import RegisterInvitedUser from "./pages/Auth/RegisterInvitedUser";
+import TeamPage from "./features/teams/pages/TeamPage";
+import RegisterInvitedUser from "./features/auth/pages/RegisterInvitedUser";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -48,9 +48,10 @@ export default function App() {
       element: <MainLayout />,
       children: [
         { index: true, element: <HomePage /> },
-        { path: 'dashboard', element: <UserDashboard /> },
-        { path: 'notes', element: <NotesPage /> },
-        {path : 'team', element:<TeamPage/>}
+
+        { path: 'issues', element: <BoardPage /> },
+        { path: 'projects', element: <ProjectsPage /> },
+        { path: 'team', element: <TeamPage /> }
       ]
     }
   ])
