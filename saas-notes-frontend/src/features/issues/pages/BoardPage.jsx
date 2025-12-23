@@ -164,7 +164,8 @@ const IssuesPage = () => {
                     <Select
                         placeholder="Project"
                         allowClear
-                        className="w-40"
+                        className="w-40 custom-select"
+
                         loading={loadingProjects}
                         onChange={v => setFilters(prev => ({ ...prev, project_id: v }))}
                         options={(projects?.data || []).map(p => ({ label: p.name, value: p.project_id }))}
@@ -172,8 +173,9 @@ const IssuesPage = () => {
                     <Select
                         placeholder="Status"
                         allowClear
-                        className="w-32"
+                        className="w-32 custom-select"
                         onChange={v => setFilters(prev => ({ ...prev, status: v }))}
+                        style={{ width: "120px" }}
                         options={[
                             { label: 'To Do', value: 'TODO' },
                             { label: 'In Progress', value: 'IN_PROGRESS' },
@@ -187,6 +189,7 @@ const IssuesPage = () => {
                         ]}
                         value={viewMode}
                         onChange={setViewMode}
+                        classID="custom-select"
                     />
                     <Button type="primary" onClick={() => { setSelectedIssue(null); setVisible(true); }} icon={<Plus size={16} />}>
                         Create Issue

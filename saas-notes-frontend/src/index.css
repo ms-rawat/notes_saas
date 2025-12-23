@@ -9,7 +9,7 @@
 
 :root {
   /* 🌤 Default Theme — Soft Modern Glass */
---color-primary: #f7f7f7;
+  --color-primary: #f7f7f7;
   --color-secondary: #ede8ea;
   --color-accent: #aeb0b2;
   --color-bg: #fdf2f8;
@@ -18,7 +18,7 @@
   --color-muted: #9ca3af;
   --color-text: #1f2937;
   --color-hover: #e2e2e2;
-  
+
   --glass-blur: 20px;
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   --glass-border: 1px solid rgba(255, 255, 255, 0.4);
@@ -41,7 +41,7 @@
   --color-border: rgba(255, 255, 255, 0.06);
   --color-muted: #cbd5e1;
   --color-text: #f8fafc;
-   --color-hover: #141a2d;
+  --color-hover: #141a2d;
   --glass-blur: 18px;
   --glass-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
   --glass-border: 1px solid rgba(0, 255, 255, 0.15);
@@ -53,6 +53,7 @@
   --color-textbg: #f8fafc;
   --color-textsurface: #f8fafc;
 }
+
 .theme-jungle {
   --color-primary: #1a3c27;
   --color-secondary: #2d5a3d;
@@ -82,6 +83,7 @@
   --color-jungle-flower: #ec4899;
   --color-jungle-sunlight: #fef08a;
 }
+
 /* 💜 Cyber Theme — Purple/Blue Glow */
 .theme-cyber {
   --color-primary: #1f0026;
@@ -98,9 +100,9 @@
   --glass-border: 1px solid rgba(255, 0, 255, 0.2);
 
   /* 🖋️ Text contrast colors */
-   --color-textprimary: #faf5ff;
-   --color-textsecondary: #e9d5ff;
-   --color-textaccent: #095bf3;
+  --color-textprimary: #faf5ff;
+  --color-textsecondary: #e9d5ff;
+  --color-textaccent: #095bf3;
   --color-textbg: #faf5ff;
   --color-textsurface: #faf5ff;
 }
@@ -120,7 +122,6 @@
   --glass-shadow: 0 0 40px rgba(0, 242, 254, 0.4);
   --glass-border: 1px solid rgba(0, 242, 254, 0.3);
 
-  /* 🖋️ Text contrast colors */
   --color-textprimary: #e2e8f0;
   --color-textsecondary: #a5b4c8;
   --color-textaccent: #00f2fe;
@@ -128,7 +129,6 @@
   --color-textsurface: #e2e8f0;
 }
 
-/* 🌙 Midnight Theme — Minimal Dark */
 .theme-midnight {
   --color-primary: #0f172a;
   --color-secondary: #1e293b;
@@ -143,7 +143,6 @@
   --glass-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
   --glass-border: 1px solid rgba(59, 130, 246, 0.2);
 
-  /* 🖋️ Text contrast colors */
   --color-textprimary: #e2e8f0;
   --color-textsecondary: #cbd5e1;
   --color-textaccent: #3b82f6;
@@ -152,7 +151,6 @@
 }
 
 
-/* 🔗 Map to Tailwind */
 @theme {
   --color-primary: var(--color-primary);
   --color-secondary: var(--color-secondary);
@@ -170,9 +168,9 @@
   --color-hover: var(--color-hover);
 
 
-  --color-textprimary: var( --color-textprimary);
-  --color-textsecondary: var( --color-textsecondary);
-  --color-textaccent: var( --color-textaccent);
+  --color-textprimary: var(--color-textprimary);
+  --color-textsecondary: var(--color-textsecondary);
+  --color-textaccent: var(--color-textaccent);
   --color-textbg: var(--color-textbg);
   --color-textsurface: var(--color-textsurface);
 
@@ -188,6 +186,7 @@
   border-radius: 12px;
   padding: 20px;
 }
+
 .sidebar {
   background: var(--color-surface);
   backdrop-filter: blur(var(--glass-blur));
@@ -203,27 +202,31 @@
   border-right: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
-.custom-table .ant-table-thead > tr > th {
-  background-color: var(--color-bg) ; 
-  color: var(--color-textprimary);  
-            
+
+.custom-table .ant-table-thead>tr>th {
+  background-color: var(--color-bg);
+  color: var(--color-textprimary);
+
 }
 
-.custom-table  .ant-table-tbody > tr > td {
-  background-color: var(--color-bg); 
-  color:var(--color-textprimary) ;
+.custom-table .ant-table-tbody>tr>td {
+  background-color: var(--color-bg);
+  color: var(--color-textprimary);
 }
-.ant-pagination{
-  color : var(--color-textsurface)
+
+.ant-pagination {
+  color: var(--color-textsurface)
 }
-.custom-table .ant-table-tbody > tr.ant-table-row:hover > td {
-  background-color: var(--color-hover); /* define this variable */
+
+.custom-table .ant-table-tbody>tr.ant-table-row:hover>td {
+  background-color: var(--color-hover);
   color: var(--color-textsecondary);
 }
 
 .custom-card {
   position: relative;
-  background: rgba(20, 25, 40, 0.85); /* glassmorphic base */
+  background: rgba(20, 25, 40, 0.85);
+  /* glassmorphic base */
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
@@ -237,27 +240,22 @@
   border-color: var(--color-primary, #3b82f6);
 }
 
-/* 🎨 Title styling */
 .custom-card .ant-card-head {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(
-    90deg,
-    rgba(59, 130, 246, 0.2),
-    rgba(147, 51, 234, 0.2)
-  );
+  background: linear-gradient(90deg,
+      rgba(59, 130, 246, 0.2),
+      rgba(147, 51, 234, 0.2));
   color: var(--color-primary, #3b82f6);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 
-/* ✨ Content styling */
 .custom-card .ant-card-body {
   color: var(--color-text, #e5e7eb);
   font-size: 14px;
   padding: 20px;
 }
 
-/* Optional animated border glow */
 .custom-card::before {
   content: '';
   position: absolute;
@@ -276,7 +274,6 @@
   opacity: 1;
 }
 
-/* 🎭 Global Modal Theming */
 .ant-modal-content {
   background-color: var(--color-surface) !important;
   backdrop-filter: blur(var(--glass-blur));
@@ -306,8 +303,7 @@
   background-color: var(--color-hover) !important;
 }
 
-/* Form Elements inside Modal */
-.ant-modal .ant-form-item-label > label {
+.ant-modal .ant-form-item-label>label {
   color: var(--color-textsecondary) !important;
 }
 
@@ -350,4 +346,19 @@
 
 .ant-select-item-option-active {
   background-color: var(--color-hover) !important;
+}
+
+.custom-select .ant-select-selector {
+  background-color: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-textprimary) !important;
+}
+
+.custom-select .ant-select-arrow {
+  color: var(--color-muted) !important;
+}
+
+.custom-select .ant-select-clear {
+  background: var(--color-textsurface) !important;
+  color: var(--color-textbg) !important;
 }

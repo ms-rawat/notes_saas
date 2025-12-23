@@ -76,7 +76,7 @@ const Sidebar = ({ items = [], collapsed, onToggle }) => {
         {/* Center Logo */}
         {!collapsed && (
           <h2 className="LogoText text-xl ms-4 font-semibold tracking-wide transition-opacity text-textprimary duration-300">
-            NotesVerse
+            Bug Tracker
           </h2>
         )}
       </div>
